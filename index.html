@@ -968,7 +968,7 @@
 ════════════════════════════════════════════════ -->
 <script>
 /* ── CONFIG ─────────────────────────────────────────────────────────── */
-const API = 'https://script.google.com/macros/s/AKfycbzdOTakBIufiwsyFGQGn2ASFDY0CqjvJPbT8AkDTTcRVtnBYBJMPi5HoPjH3CzoXOcz/exec';
+const API = 'https://script.google.com/macros/s/AKfycbz1iUmBfoTAGcmAqthsODGVczo824zW-YAcKDLC688Y8DwMICqJ7oEvOMRjJJPzmaQK/exec';
 
 /* ── STATE ───────────────────────────────────────────────────────────── */
 let student        = null;
@@ -1089,7 +1089,7 @@ function showDashboard(data) {
 
     const img = document.getElementById('profPhoto');
     if (p.photo) {
-        img.src = p.photo;
+    img.src = `./assets/photos/${p.photo}`;
         img.onerror = () => img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.name) + '&background=00BCD4&color=fff&size=150';
     }
 
