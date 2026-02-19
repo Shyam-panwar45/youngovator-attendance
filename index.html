@@ -1001,7 +1001,7 @@ let curYear        = new Date().getFullYear();
 
 /* ── FIX 1: Was 10000ms — now 800ms for near-instant RFID detection ── */
 const POLL_MS      = 200;
-const INACTIVE_MS  = 100000;
+const INACTIVE_MS  = 10000;
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
 window.addEventListener('load', () => {
