@@ -403,11 +403,28 @@
             font-size:.72vw; transition:transform .15s; cursor:default;
         }
         .cd.empty   { background:transparent; }
-        .cd.future  { background:var(--bg2); opacity:.5; }
-        .cd.full-day{ background:linear-gradient(145deg,rgba(0,200,150,.18),rgba(0,200,150,.07)); }
-        .cd.half-day{ background:linear-gradient(145deg,rgba(255,176,32,.2),rgba(255,176,32,.07)); }
-        .cd.absent  { background:linear-gradient(145deg,rgba(244,67,54,.14),rgba(244,67,54,.05)); }
-        .cd.today   { box-shadow:0 0 0 2.5px var(--pink),0 0 14px rgba(233,30,99,.25); }
+        .cd.future  { 
+    background: #f1f5f9;   /* soft gray */
+    opacity: 0.7; 
+}
+
+.cd.full-day { 
+    background: #dcfce7;   /* soft green */
+}
+
+.cd.half-day { 
+    background: #fef3c7;   /* soft amber */
+}
+
+.cd.absent { 
+    background: #fee2e2;   /* soft red */
+}
+
+.cd.today { 
+    box-shadow: 0 0 0 2px #3b82f6;  /* clean blue highlight */
+}
+
+
         .cd:not(.empty):hover { transform:scale(1.07); }
         .cd-n { font-weight:900; font-size:.9vw; color:var(--t1); }
         .cd-s { font-size:.72vw; font-weight:800; }
@@ -983,8 +1000,8 @@ let curMonth       = new Date().getMonth();
 let curYear        = new Date().getFullYear();
 
 /* ── FIX 1: Was 10000ms — now 800ms for near-instant RFID detection ── */
-const POLL_MS      = 800;
-const INACTIVE_MS  = 10000;
+const POLL_MS      = 200;
+const INACTIVE_MS  = 100000;
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
 window.addEventListener('load', () => {
