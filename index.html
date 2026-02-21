@@ -762,19 +762,31 @@
         function dlFromModal(){if(!student)return;window.open(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}`,'_blank');resetActive();startInactTimer();}
 
         async function printReport(){
-            if(!student)return;resetActive();
-            try{
-                const r=await fetch(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}&t=${Date.now()}`);
-                const reportText=await r.text();
-                const iframe=document.getElementById('silentPrintFrame');
-                const doc=iframe.contentWindow.document;
-                doc.open();
-                doc.write(`<!DOCTYPE html><html><head><title>Attendance Report - ${student.name}</title><style>body{font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.6;padding:20px;color:#000;white-space:pre;}@media print{body{margin:0;padding:10px;font-size:11px;}@page{margin:10mm;}}</style></head><body>${reportText.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</body></html>`);
-                doc.close();
-                setTimeout(()=>{document.getElementById('printOverlay').classList.add('active');iframe.contentWindow.print();setTimeout(()=>{document.getElementById('printOverlay').classList.remove('active');},1000);},100);
-            }catch(e){alert('Print failed! Please check your connection.');}
-            startInactTimer();
-        }
+    if(!student) return;
+
+    resetActive();
+    document.getElementById('printOverlay').classList.add('active');
+
+    try {
+        const response = await fetch(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}&t=${Date.now()}`);
+        const reportText = await response.text();
+
+        await fetch("http://192.168.1.37:3000/print", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: reportText })
+        });
+
+    } catch (error) {
+        alert("Printing failed! Check Raspberry Pi connection.");
+    }
+
+    setTimeout(()=>{
+        document.getElementById('printOverlay').classList.remove('active');
+    },1000);
+
+    startInactTimer();
+}
         async function printFromModal(){closeModal();await printReport();}
 
         const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
