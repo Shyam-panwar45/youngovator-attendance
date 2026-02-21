@@ -10,258 +10,1548 @@
         rel="stylesheet">
 
     <style>
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-        :root{
-            --cyan:#00BCD4;--cyan-d:#0097A7;--cyan-l:#4DD0E1;--cyan-pale:#E0F7FA;
-            --pink:#E91E63;--pink-l:#F06292;--pink-pale:#FCE4EC;
-            --bg:#F2FAFB;--bg2:#E8F4F6;--bg3:#D8EEF2;--surf:#FFFFFF;
-            --t1:#0B2733;--t2:#3D5A66;--t3:#7A9BAA;
-            --ok:#00C896;--warn:#FFB020;--err:#F44336;
-            --sh:0 4px 20px rgba(0,188,212,.13);--shd:0 12px 40px rgba(0,188,212,.18);
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        html,body{width:100vw;height:100vh;overflow:hidden;}
-        body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--t1);}
-        .bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 55% 45% at 2% 2%,rgba(0,188,212,.09) 0%,transparent 65%),radial-gradient(ellipse 45% 55% at 98% 98%,rgba(233,30,99,.07) 0%,transparent 65%);}
-        .bg-dots{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3;background-image:radial-gradient(rgba(0,188,212,.28) 1.2px,transparent 1.2px);background-size:26px 26px;}
+
+        :root {
+            --cyan: #00BCD4;
+            --cyan-d: #0097A7;
+            --cyan-l: #4DD0E1;
+            --cyan-pale: #E0F7FA;
+            --pink: #E91E63;
+            --pink-l: #F06292;
+            --pink-pale: #FCE4EC;
+            --bg: #F2FAFB;
+            --bg2: #E8F4F6;
+            --bg3: #D8EEF2;
+            --surf: #FFFFFF;
+            --t1: #0B2733;
+            --t2: #3D5A66;
+            --t3: #7A9BAA;
+            --ok: #00C896;
+            --warn: #FFB020;
+            --err: #F44336;
+            --sh: 0 4px 20px rgba(0, 188, 212, .13);
+            --shd: 0 12px 40px rgba(0, 188, 212, .18);
+        }
+
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--t1);
+        }
+
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse 55% 45% at 2% 2%, rgba(0, 188, 212, .09) 0%, transparent 65%), radial-gradient(ellipse 45% 55% at 98% 98%, rgba(233, 30, 99, .07) 0%, transparent 65%);
+        }
+
+        .bg-dots {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: .3;
+            background-image: radial-gradient(rgba(0, 188, 212, .28) 1.2px, transparent 1.2px);
+            background-size: 26px 26px;
+        }
 
         /* HEADER */
-        .hdr{position:relative;z-index:100;height:12vh;display:flex;justify-content:space-between;align-items:center;padding:0 3vw;background:var(--surf);box-shadow:0 3px 20px rgba(0,188,212,.14);}
-        .hdr-left{display:flex;align-items:center;gap:1.8vw;}
-        .logo{height:9vh;width:auto;border-radius:0;}
-        .co-name{font-size:3vw;font-weight:900;letter-spacing:.4px;background:linear-gradient(110deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .hdr-right{display:flex;align-items:center;gap:2vw;}
-        .conn-pill{display:flex;align-items:center;gap:1vw;padding:1.3vh 2.2vw;border-radius:999px;font-size:1.5vw;font-weight:800;letter-spacing:.8px;text-transform:uppercase;}
-        .conn-pill.connected{background:rgba(0,200,150,.11);color:var(--ok);}
-        .conn-pill.disconnected{background:rgba(244,67,54,.11);color:var(--err);}
-        .conn-pill.paused{background:rgba(255,176,32,.11);color:var(--warn);}
-        .conn-dot{width:1.4vw;height:1.4vw;border-radius:50%;animation:blink 2s ease-in-out infinite;}
-        .connected .conn-dot{background:var(--ok);box-shadow:0 0 10px var(--ok);}
-        .disconnected .conn-dot{background:var(--err);box-shadow:0 0 10px var(--err);}
-        .paused .conn-dot{background:var(--warn);box-shadow:0 0 10px var(--warn);}
-        @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
-        .clock{background:var(--bg2);padding:1.2vh 2vw;border-radius:16px;text-align:right;box-shadow:var(--sh);}
-        .clock-d{font-size:1.6vw;color:var(--t2);font-weight:800;}
-        .clock-t{font-family:'Space Mono',monospace;font-size:2.5vw;color:var(--cyan);font-weight:700;}
+        .hdr {
+            position: relative;
+            z-index: 100;
+            height: 12vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3vw;
+            background: var(--surf);
+            box-shadow: 0 3px 20px rgba(0, 188, 212, .14);
+        }
+
+        .hdr-left {
+            display: flex;
+            align-items: center;
+            gap: 1.8vw;
+        }
+
+        .logo {
+            height: 9vh;
+            width: auto;
+            border-radius: 0;
+        }
+
+        .co-name {
+            font-size: 3vw;
+            font-weight: 900;
+            letter-spacing: .4px;
+            background: linear-gradient(110deg, var(--cyan), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hdr-right {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+        }
+
+        .conn-pill {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            padding: 1.3vh 2.2vw;
+            border-radius: 999px;
+            font-size: 1.5vw;
+            font-weight: 800;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+
+        .conn-pill.connected {
+            background: rgba(0, 200, 150, .11);
+            color: var(--ok);
+        }
+
+        .conn-pill.disconnected {
+            background: rgba(244, 67, 54, .11);
+            color: var(--err);
+        }
+
+        .conn-pill.paused {
+            background: rgba(255, 176, 32, .11);
+            color: var(--warn);
+        }
+
+        .conn-dot {
+            width: 1.4vw;
+            height: 1.4vw;
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .connected .conn-dot {
+            background: var(--ok);
+            box-shadow: 0 0 10px var(--ok);
+        }
+
+        .disconnected .conn-dot {
+            background: var(--err);
+            box-shadow: 0 0 10px var(--err);
+        }
+
+        .paused .conn-dot {
+            background: var(--warn);
+            box-shadow: 0 0 10px var(--warn);
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .4;
+                transform: scale(1.5)
+            }
+        }
+
+        .clock {
+            background: var(--bg2);
+            padding: 1.2vh 2vw;
+            border-radius: 16px;
+            text-align: right;
+            box-shadow: var(--sh);
+        }
+
+        .clock-d {
+            font-size: 1.6vw;
+            color: var(--t2);
+            font-weight: 800;
+        }
+
+        .clock-t {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5vw;
+            color: var(--cyan);
+            font-weight: 700;
+        }
 
         /* MAIN */
-        .main{position:relative;z-index:10;height:88vh;overflow:hidden;}
+        .main {
+            position: relative;
+            z-index: 10;
+            height: 88vh;
+            overflow: hidden;
+        }
 
         /* WELCOME */
-        .welcome{display:none;height:100%;}
-        .welcome.active{display:grid;grid-template-columns:50% 50%;}
-        .robo-panel{background:linear-gradient(160deg,#0B2733 0%,#0D3544 50%,#091F2A 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2vh 2vw;overflow:hidden;position:relative;}
-        .robo-panel::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,188,212,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,188,212,.07) 1px,transparent 1px);background-size:40px 40px;}
-        .robo-scene{position:relative;width:48vw;height:80vh;max-height:80vh;}
-        .robo-svg{width:100%;height:100%;}
-        .trace{stroke:var(--cyan);stroke-width:1.5;fill:none;opacity:.3;}
-        .trace-glow{stroke:var(--cyan);stroke-width:2.5;fill:none;opacity:0;animation:traceLight 9s ease-in-out infinite;}
-        .trace-glow:nth-child(2){animation-delay:1.5s;stroke:var(--pink);}
-        .trace-glow:nth-child(3){animation-delay:3s;}
-        .trace-glow:nth-child(4){animation-delay:4.5s;stroke:var(--pink);}
-        @keyframes traceLight{0%,10%{opacity:0;stroke-dashoffset:300}20%,40%{opacity:.8;stroke-dashoffset:0}55%,100%{opacity:0;stroke-dashoffset:-300}}
-        .robot-body{animation:robotBob 4s ease-in-out infinite;transform-origin:50% 80%;}
-        @keyframes robotBob{0%,100%{transform:translateY(0px)}50%{transform:translateY(-8px)}}
-        .eye-l{animation:eyeGlow 3s ease-in-out infinite;}
-        .eye-r{animation:eyeGlow 3s ease-in-out infinite;animation-delay:.4s;}
-        @keyframes eyeGlow{0%,100%{fill:#00BCD4;filter:drop-shadow(0 0 4px #00BCD4)}40%,60%{fill:#FFFFFF;filter:drop-shadow(0 0 12px #00BCD4)}}
-        .gear-big{animation:gearSpin 9s linear infinite;transform-origin:70px 340px;}
-        .gear-small{animation:gearSpinR 4.5s linear infinite;transform-origin:108px 353px;}
-        @keyframes gearSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @keyframes gearSpinR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-        .particle{r:4;fill:var(--cyan);animation:particleFlow 9s linear infinite;}
-        .particle:nth-child(1){animation-delay:0s;fill:var(--cyan);}
-        .particle:nth-child(2){animation-delay:2s;fill:var(--pink);}
-        .particle:nth-child(3){animation-delay:4s;fill:#FFF176;}
-        .particle:nth-child(4){animation-delay:6s;fill:var(--cyan-l);}
-        @keyframes particleFlow{0%{opacity:0}5%{opacity:1}85%{opacity:1}100%{opacity:0}}
-        .scan-line{animation:scanSweep 9s ease-in-out infinite;}
-        @keyframes scanSweep{0%{transform:translateY(-200px);opacity:0}10%{opacity:.7}80%{transform:translateY(200px);opacity:.7}90%,100%{transform:translateY(220px);opacity:0}}
-        .pulse-ring{fill:none;stroke:var(--cyan);stroke-width:1.5;opacity:0;animation:pulseRing 9s ease-out infinite;}
-        .pulse-ring:nth-child(2){animation-delay:3s;stroke:var(--pink);}
-        .pulse-ring:nth-child(3){animation-delay:6s;}
-        @keyframes pulseRing{0%{r:10;opacity:.8}60%{r:50;opacity:0}100%{r:50;opacity:0}}
-        .node{animation:nodeBlink 2s ease-in-out infinite;}
-        .node:nth-child(odd){animation-delay:.5s;fill:var(--pink);}
-        .node:nth-child(even){fill:var(--cyan);}
-        @keyframes nodeBlink{0%,100%{opacity:.4;r:3}50%{opacity:1;r:5}}
-        .robo-title{position:absolute;bottom:3vh;left:0;right:0;text-align:center;font-size:1.3vw;font-weight:900;color:rgba(255,255,255,.75);letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 20px rgba(0,188,212,.6);padding:0 2vw;}
-        .robo-title span{color:var(--cyan-l);}
+        .welcome {
+            display: none;
+            height: 100%;
+        }
+
+        .welcome.active {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        .robo-panel {
+            background: linear-gradient(160deg, #0B2733 0%, #0D3544 50%, #091F2A 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2vh 2vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .robo-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 188, 212, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 188, 212, .07) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .robo-scene {
+            position: relative;
+            width: 48vw;
+            height: 80vh;
+            max-height: 80vh;
+        }
+
+        .robo-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .trace {
+            stroke: var(--cyan);
+            stroke-width: 1.5;
+            fill: none;
+            opacity: .3;
+        }
+
+        .trace-glow {
+            stroke: var(--cyan);
+            stroke-width: 2.5;
+            fill: none;
+            opacity: 0;
+            animation: traceLight 9s ease-in-out infinite;
+        }
+
+        .trace-glow:nth-child(2) {
+            animation-delay: 1.5s;
+            stroke: var(--pink);
+        }
+
+        .trace-glow:nth-child(3) {
+            animation-delay: 3s;
+        }
+
+        .trace-glow:nth-child(4) {
+            animation-delay: 4.5s;
+            stroke: var(--pink);
+        }
+
+        @keyframes traceLight {
+
+            0%,
+            10% {
+                opacity: 0;
+                stroke-dashoffset: 300
+            }
+
+            20%,
+            40% {
+                opacity: .8;
+                stroke-dashoffset: 0
+            }
+
+            55%,
+            100% {
+                opacity: 0;
+                stroke-dashoffset: -300
+            }
+        }
+
+        .robot-body {
+            animation: robotBob 4s ease-in-out infinite;
+            transform-origin: 50% 80%;
+        }
+
+        @keyframes robotBob {
+
+            0%,
+            100% {
+                transform: translateY(0px)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        .eye-l {
+            animation: eyeGlow 3s ease-in-out infinite;
+        }
+
+        .eye-r {
+            animation: eyeGlow 3s ease-in-out infinite;
+            animation-delay: .4s;
+        }
+
+        @keyframes eyeGlow {
+
+            0%,
+            100% {
+                fill: #00BCD4;
+                filter: drop-shadow(0 0 4px #00BCD4)
+            }
+
+            40%,
+            60% {
+                fill: #FFFFFF;
+                filter: drop-shadow(0 0 12px #00BCD4)
+            }
+        }
+
+        .gear-big {
+            animation: gearSpin 9s linear infinite;
+            transform-origin: 70px 340px;
+        }
+
+        .gear-small {
+            animation: gearSpinR 4.5s linear infinite;
+            transform-origin: 108px 353px;
+        }
+
+        @keyframes gearSpin {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes gearSpinR {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(-360deg)
+            }
+        }
+
+        .particle {
+            r: 4;
+            fill: var(--cyan);
+            animation: particleFlow 9s linear infinite;
+        }
+
+        .particle:nth-child(1) {
+            animation-delay: 0s;
+            fill: var(--cyan);
+        }
+
+        .particle:nth-child(2) {
+            animation-delay: 2s;
+            fill: var(--pink);
+        }
+
+        .particle:nth-child(3) {
+            animation-delay: 4s;
+            fill: #FFF176;
+        }
+
+        .particle:nth-child(4) {
+            animation-delay: 6s;
+            fill: var(--cyan-l);
+        }
+
+        @keyframes particleFlow {
+            0% {
+                opacity: 0
+            }
+
+            5% {
+                opacity: 1
+            }
+
+            85% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: 0
+            }
+        }
+
+        .scan-line {
+            animation: scanSweep 9s ease-in-out infinite;
+        }
+
+        @keyframes scanSweep {
+            0% {
+                transform: translateY(-200px);
+                opacity: 0
+            }
+
+            10% {
+                opacity: .7
+            }
+
+            80% {
+                transform: translateY(200px);
+                opacity: .7
+            }
+
+            90%,
+            100% {
+                transform: translateY(220px);
+                opacity: 0
+            }
+        }
+
+        .pulse-ring {
+            fill: none;
+            stroke: var(--cyan);
+            stroke-width: 1.5;
+            opacity: 0;
+            animation: pulseRing 9s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 3s;
+            stroke: var(--pink);
+        }
+
+        .pulse-ring:nth-child(3) {
+            animation-delay: 6s;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                r: 10;
+                opacity: .8
+            }
+
+            60% {
+                r: 50;
+                opacity: 0
+            }
+
+            100% {
+                r: 50;
+                opacity: 0
+            }
+        }
+
+        .node {
+            animation: nodeBlink 2s ease-in-out infinite;
+        }
+
+        .node:nth-child(odd) {
+            animation-delay: .5s;
+            fill: var(--pink);
+        }
+
+        .node:nth-child(even) {
+            fill: var(--cyan);
+        }
+
+        @keyframes nodeBlink {
+
+            0%,
+            100% {
+                opacity: .4;
+                r: 3
+            }
+
+            50% {
+                opacity: 1;
+                r: 5
+            }
+        }
+
+        .robo-title {
+            position: absolute;
+            bottom: 3vh;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1.3vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, .75);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 188, 212, .6);
+            padding: 0 2vw;
+        }
+
+        .robo-title span {
+            color: var(--cyan-l);
+        }
 
         /* SCAN PANEL */
-        .scan-panel{background:var(--surf);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2vh 4vw;text-align:center;}
-        .wc-title{font-size:4.2vw;font-weight:900;line-height:1.1;margin-bottom:0.8vh;background:linear-gradient(135deg,var(--cyan) 0%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .wc-sub{font-size:1.3vw;color:var(--t3);font-weight:700;margin-bottom:2vh;letter-spacing:1.5px;text-transform:uppercase;}
+        .scan-panel {
+            background: var(--surf);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2vh 4vw;
+            text-align: center;
+        }
+
+        .wc-title {
+            font-size: 4.2vw;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 0.8vh;
+            background: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .wc-sub {
+            font-size: 1.3vw;
+            color: var(--t3);
+            font-weight: 700;
+            margin-bottom: 2vh;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
 
         /* SCAN CARD — position:relative is critical for the overlay to work */
-        .scan-card{background:linear-gradient(145deg,#F6FDFE,#EBF8FA);border-radius:28px;padding:2.5vh 3vw;text-align:center;box-shadow:var(--shd),inset 0 1px 0 rgba(255,255,255,.9);position:relative;overflow:hidden;width:100%;max-width:36vw;}
-        .scan-card::before{content:'';position:absolute;inset:-80%;background:conic-gradient(from 0deg,transparent 0%,rgba(0,188,212,.05) 50%,transparent 100%);animation:sweep 5s linear infinite;}
-        @keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        .sc-icon{width:auto;height:auto;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5vh;position:relative;z-index:1;animation:scPulse 2.5s ease-in-out infinite;}
-        @keyframes scPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-        .sc-title{font-size:2.6vw;font-weight:900;margin:1vh 0 .5vh;position:relative;z-index:1;}
-        .sc-hint{font-size:1.2vw;color:var(--t2);font-weight:700;margin-bottom:1.5vh;position:relative;z-index:1;}
-        .sc-status{display:inline-flex;align-items:center;gap:.9vw;padding:1.1vh 2.2vw;border-radius:999px;font-size:1.8vw;font-weight:800;letter-spacing:.7px;position:relative;z-index:1;transition:all .3s ease;cursor:default;}
-        .sc-status.listening{background:rgba(0,200,150,.13);color:var(--ok);}
-        .sc-status.error{background:rgba(244,67,54,.13);color:var(--err);}
+        .scan-card {
+            background: linear-gradient(145deg, #F6FDFE, #EBF8FA);
+            border-radius: 28px;
+            padding: 2.5vh 3vw;
+            text-align: center;
+            box-shadow: var(--shd), inset 0 1px 0 rgba(255, 255, 255, .9);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 36vw;
+        }
+
+        .scan-card::before {
+            content: '';
+            position: absolute;
+            inset: -80%;
+            background: conic-gradient(from 0deg, transparent 0%, rgba(0, 188, 212, .05) 50%, transparent 100%);
+            animation: sweep 5s linear infinite;
+        }
+
+        @keyframes sweep {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .sc-icon {
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5vh;
+            position: relative;
+            z-index: 1;
+            animation: scPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes scPulse {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.1)
+            }
+        }
+
+        .sc-title {
+            font-size: 2.6vw;
+            font-weight: 900;
+            margin: 1vh 0 .5vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sc-hint {
+            font-size: 1.2vw;
+            color: var(--t2);
+            font-weight: 700;
+            margin-bottom: 1.5vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sc-status {
+            display: inline-flex;
+            align-items: center;
+            gap: .9vw;
+            padding: 1.1vh 2.2vw;
+            border-radius: 999px;
+            font-size: 1.8vw;
+            font-weight: 800;
+            letter-spacing: .7px;
+            position: relative;
+            z-index: 1;
+            transition: all .3s ease;
+            cursor: default;
+        }
+
+        .sc-status.listening {
+            background: rgba(0, 200, 150, .13);
+            color: var(--ok);
+        }
+
+        .sc-status.error {
+            background: rgba(244, 67, 54, .13);
+            color: var(--err);
+        }
 
         /* ─────────────────────────────────────────────────────────────────
            KEY FIX: .detected-name-wrap is now position:absolute so it
            overlays the scan card entirely — nothing gets pushed off-screen
         ───────────────────────────────────────────────────────────────── */
-        .detected-name-wrap{
-            display:none;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
+        .detected-name-wrap {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             /* Overlay the whole card */
-            position:absolute;
-            inset:0;
-            z-index:20;
-            border-radius:28px;
-            background:linear-gradient(145deg,#F6FDFE,#EBF8FA);
-            animation:namePop .45s cubic-bezier(.34,1.56,.64,1) both;
-            padding:2vh 2.5vw;
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            border-radius: 28px;
+            background: linear-gradient(145deg, #F6FDFE, #EBF8FA);
+            animation: namePop .45s cubic-bezier(.34, 1.56, .64, 1) both;
+            padding: 2vh 2.5vw;
         }
-        .detected-name-wrap.show{display:flex;}
-        @keyframes namePop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+
+        .detected-name-wrap.show {
+            display: flex;
+        }
+
+        @keyframes namePop {
+            0% {
+                transform: scale(.85);
+                opacity: 0
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
 
         /* Green ring with checkmark */
-        .det-ring{
-            width:6.5vw;height:6.5vw;border-radius:50%;
-            background:linear-gradient(135deg,rgba(0,200,150,.15),rgba(0,188,212,.1));
-            border:3px solid var(--ok);
-            display:flex;align-items:center;justify-content:center;
-            margin-bottom:1.2vh;
-            animation:scPulse 1.5s ease-in-out infinite;
+        .det-ring {
+            width: 6.5vw;
+            height: 6.5vw;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 200, 150, .15), rgba(0, 188, 212, .1));
+            border: 3px solid var(--ok);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2vh;
+            animation: scPulse 1.5s ease-in-out infinite;
         }
-        .det-check{font-size:3vw;line-height:1;color:var(--ok);}
-        .det-greeting{font-size:1vw;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:.4vh;}
-        .det-name{font-size:2.5vw;font-weight:900;color:var(--t1);line-height:1.2;text-align:center;margin-bottom:.8vh;}
-        .det-loading{display:inline-flex;align-items:center;gap:.5vw;font-size:.95vw;font-weight:700;color:var(--cyan);background:rgba(0,188,212,.1);padding:.6vh 1.4vw;border-radius:999px;}
-        .det-spinner{width:1vw;height:1vw;border:2px solid rgba(0,188,212,.3);border-top:2px solid var(--cyan);border-radius:50%;animation:spin 1s linear infinite;}
-        @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+        .det-check {
+            font-size: 3vw;
+            line-height: 1;
+            color: var(--ok);
+        }
+
+        .det-greeting {
+            font-size: 1vw;
+            font-weight: 800;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: .4vh;
+        }
+
+        .det-name {
+            font-size: 2.5vw;
+            font-weight: 900;
+            color: var(--t1);
+            line-height: 1.2;
+            text-align: center;
+            margin-bottom: .8vh;
+        }
+
+        .det-loading {
+            display: inline-flex;
+            align-items: center;
+            gap: .5vw;
+            font-size: .95vw;
+            font-weight: 700;
+            color: var(--cyan);
+            background: rgba(0, 188, 212, .1);
+            padding: .6vh 1.4vw;
+            border-radius: 999px;
+        }
+
+        .det-spinner {
+            width: 1vw;
+            height: 1vw;
+            border: 2px solid rgba(0, 188, 212, .3);
+            border-top: 2px solid var(--cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
 
         /* DASHBOARD */
-        .dashboard{display:none;height:100%;}
-        .dashboard.active{display:grid;grid-template-columns:48% 52%;height:100%;}
-        .prof-panel{background:var(--surf);height:100%;display:flex;flex-direction:column;align-items:center;padding:3vh 2.5vw 2.5vh;box-shadow:4px 0 20px rgba(0,188,212,.07);}
-        .avatar-wrap{width:15vh;height:15vh;border-radius:50%;padding:3px;background:linear-gradient(135deg,var(--cyan),var(--pink));box-shadow:0 0 0 5px rgba(0,188,212,.12),var(--sh);margin-bottom:2vh;flex-shrink:0;}
-        .avatar-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid white;}
-        .p-name{font-size:3.4vw;font-weight:900;text-align:center;margin-bottom:.3vh;}
-        .p-id{font-size:1.6vw;font-weight:800;color:var(--pink);margin-bottom:2.5vh;}
-        .p-badge{display:inline-flex;align-items:center;gap:.5vw;padding:.7vh 1.5vw;border-radius:999px;background:linear-gradient(110deg,rgba(0,188,212,.12),rgba(233,30,99,.08));font-size:1.35vw;font-weight:800;color:var(--t2);margin-bottom:2.5vh;}
-        .info-block{width:100%;display:flex;flex-direction:column;gap:.9vh;flex:1;min-height:0;}
-        .info-sec-title{font-size:1.25vw;font-weight:800;color:#14262d;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.2vh;margin-top:.5vh;}
-        .info-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg2);border-radius:12px;padding:1.4vh 1.3vw;}
-        .i-lbl{font-size:1.35vw;font-weight:700;color:#5678e1;text-transform:uppercase;letter-spacing:.5px;}
-        .i-val{font-size:1.45vw;font-weight:900;color:var(--cyan);max-width:60%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-        .stat-strip{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:.8vw;margin-top:2vh;flex-shrink:0;}
-        .ss-tile{border-radius:14px;padding:1.5vh 1vw;text-align:center;}
-        .ss-tile:nth-child(1){background:linear-gradient(145deg,#E3F2FD,#BBDEFB);}
-        .ss-tile:nth-child(2){background:linear-gradient(145deg,#E8F5E9,#C8E6C9);}
-        .ss-tile:nth-child(3){background:linear-gradient(145deg,#FCE4EC,#F8BBD9);}
-        .ss-val{font-size:2.8vw;font-weight:900;line-height:1;color:var(--t1);}
-        .ss-lbl{font-size:.65vw;font-weight:800;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-top:.4vh;}
-        .action-panel{background:var(--bg);height:100%;display:flex;flex-direction:column;padding:3vh 2.5vw 2.5vh;gap:1.8vh;}
-        .act-col{display:flex;flex-direction:column;gap:1.2vh;flex:1;}
-        .act-btn{flex:1;border-radius:18px;padding:0 2.5vw;display:flex;align-items:center;gap:1.5vw;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:var(--sh);border:none;text-align:left;min-height:0;position:relative;overflow:hidden;background:linear-gradient(90deg,#ffffff 0%,#3d5a66 150%);}
-        .act-btn:hover{background:linear-gradient(90deg,var(--t2) 0%,var(--surf) 150%);box-shadow:0 8px 30px rgba(0,188,212,.4);transform:translateX(8px);}
-        .act-btn:hover .act-name{color:white;}
-        .act-btn:hover .act-sub{color:rgba(255,255,255,.85);}
-        .act-btn:hover .act-arr{color:rgba(255,255,255,.9);}
-        .act-icon{font-size:4vh;flex-shrink:0;width:6vh;height:6vh;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:white;}
-        .act-icon-cal{background:linear-gradient(135deg,var(--cyan),var(--cyan-d));}
-        .act-icon-lib{background:linear-gradient(135deg,#7C4DFF,#5E35B1);}
-        .act-icon-fee{background:linear-gradient(135deg,var(--ok),#00A878);}
-        .act-icon-exit{background:linear-gradient(135deg,var(--err),#C62828);}
-        .act-txt{display:flex;flex-direction:column;}
-        .act-name{font-size:3.0vw;font-weight:900;color:var(--t1);line-height:1.1;}
-        .act-sub{font-size:1vw;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-top:.3vh;}
-        .act-arr{margin-left:auto;font-size:2vw;color:var(--t3);font-weight:900;flex-shrink:0;}
-        .att-summary{flex-shrink:0;background:var(--surf);border-radius:18px;padding:1.8vh 2vw;box-shadow:var(--sh);display:flex;flex-direction:column;gap:1vh;}
-        .att-sum-title{font-size:.8vw;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1px;}
-        .att-sum-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1vw;}
-        .asm-tile{border-radius:12px;padding:1.2vh 1vw;text-align:center;}
-        .asm-tile:nth-child(1){background:var(--bg2);}
-        .asm-tile:nth-child(2){background:linear-gradient(145deg,rgba(0,200,150,.12),rgba(0,200,150,.06));}
-        .asm-tile:nth-child(3){background:linear-gradient(145deg,rgba(244,67,54,.1),rgba(244,67,54,.05));}
-        .asm-tile:nth-child(4){background:linear-gradient(145deg,rgba(0,188,212,.12),rgba(0,188,212,.05));}
-        .asm-val{font-size:2vw;font-weight:900;color:var(--t1);}
-        .asm-lbl{font-size:.62vw;font-weight:800;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-top:.3vh;}
+        .dashboard {
+            display: none;
+            height: 100%;
+        }
+
+        .dashboard.active {
+            display: grid;
+            grid-template-columns: 48% 52%;
+            height: 100%;
+        }
+
+        .prof-panel {
+            background: var(--surf);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3vh 2.5vw 2.5vh;
+            box-shadow: 4px 0 20px rgba(0, 188, 212, .07);
+        }
+
+        .avatar-wrap {
+            width: 15vh;
+            height: 15vh;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--cyan), var(--pink));
+            box-shadow: 0 0 0 5px rgba(0, 188, 212, .12), var(--sh);
+            margin-bottom: 2vh;
+            flex-shrink: 0;
+        }
+
+        .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        .p-name {
+            font-size: 3.4vw;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: .3vh;
+        }
+
+        .p-id {
+            font-size: 1.6vw;
+            font-weight: 800;
+            color: var(--pink);
+            margin-bottom: 2.5vh;
+        }
+
+        .p-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .5vw;
+            padding: .7vh 1.5vw;
+            border-radius: 999px;
+            background: linear-gradient(110deg, rgba(0, 188, 212, .12), rgba(233, 30, 99, .08));
+            font-size: 1.35vw;
+            font-weight: 800;
+            color: var(--t2);
+            margin-bottom: 2.5vh;
+        }
+
+        .info-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: .9vh;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .info-sec-title {
+            font-size: 1.25vw;
+            font-weight: 800;
+            color: #14262d;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: .2vh;
+            margin-top: .5vh;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg2);
+            border-radius: 12px;
+            padding: 1.4vh 1.3vw;
+        }
+
+        .i-lbl {
+            font-size: 1.35vw;
+            font-weight: 700;
+            color: #5678e1;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .i-val {
+            font-size: 1.45vw;
+            font-weight: 900;
+            color: var(--cyan);
+            max-width: 60%;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .stat-strip {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .8vw;
+            margin-top: 2vh;
+            flex-shrink: 0;
+        }
+
+        .ss-tile {
+            border-radius: 14px;
+            padding: 1.5vh 1vw;
+            text-align: center;
+        }
+
+        .ss-tile:nth-child(1) {
+            background: linear-gradient(145deg, #E3F2FD, #BBDEFB);
+        }
+
+        .ss-tile:nth-child(2) {
+            background: linear-gradient(145deg, #E8F5E9, #C8E6C9);
+        }
+
+        .ss-tile:nth-child(3) {
+            background: linear-gradient(145deg, #FCE4EC, #F8BBD9);
+        }
+
+        .ss-val {
+            font-size: 2.8vw;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--t1);
+        }
+
+        .ss-lbl {
+            font-size: .65vw;
+            font-weight: 800;
+            color: var(--t2);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-top: .4vh;
+        }
+
+        .action-panel {
+            background: var(--bg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 3vh 2.5vw 2.5vh;
+            gap: 1.8vh;
+        }
+
+        .act-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vh;
+            flex: 1;
+        }
+
+        .act-btn {
+            flex: 1;
+            border-radius: 18px;
+            padding: 0 2.5vw;
+            display: flex;
+            align-items: center;
+            gap: 1.5vw;
+            cursor: pointer;
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: var(--sh);
+            border: none;
+            text-align: left;
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #ffffff 0%, #3d5a66 150%);
+        }
+
+        .act-btn:hover {
+            background: linear-gradient(90deg, var(--t2) 0%, var(--surf) 150%);
+            box-shadow: 0 8px 30px rgba(0, 188, 212, .4);
+            transform: translateX(8px);
+        }
+
+        .act-btn:hover .act-name {
+            color: white;
+        }
+
+        .act-btn:hover .act-sub {
+            color: rgba(255, 255, 255, .85);
+        }
+
+        .act-btn:hover .act-arr {
+            color: rgba(255, 255, 255, .9);
+        }
+
+        .act-icon {
+            font-size: 4vh;
+            flex-shrink: 0;
+            width: 6vh;
+            height: 6vh;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+        }
+
+        .act-icon-cal {
+            background: linear-gradient(135deg, var(--cyan), var(--cyan-d));
+        }
+
+        .act-icon-lib {
+            background: linear-gradient(135deg, #7C4DFF, #5E35B1);
+        }
+
+        .act-icon-fee {
+            background: linear-gradient(135deg, var(--ok), #00A878);
+        }
+
+        .act-icon-exit {
+            background: linear-gradient(135deg, var(--err), #C62828);
+        }
+
+        .act-txt {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .act-name {
+            font-size: 3.0vw;
+            font-weight: 900;
+            color: var(--t1);
+            line-height: 1.1;
+        }
+
+        .act-sub {
+            font-size: 1vw;
+            font-weight: 700;
+            color: var(--t2);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-top: .3vh;
+        }
+
+        .act-arr {
+            margin-left: auto;
+            font-size: 2vw;
+            color: var(--t3);
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .att-summary {
+            flex-shrink: 0;
+            background: var(--surf);
+            border-radius: 18px;
+            padding: 1.8vh 2vw;
+            box-shadow: var(--sh);
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+        }
+
+        .att-sum-title {
+            font-size: .8vw;
+            font-weight: 800;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .att-sum-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1vw;
+        }
+
+        .asm-tile {
+            border-radius: 12px;
+            padding: 1.2vh 1vw;
+            text-align: center;
+        }
+
+        .asm-tile:nth-child(1) {
+            background: var(--bg2);
+        }
+
+        .asm-tile:nth-child(2) {
+            background: linear-gradient(145deg, rgba(0, 200, 150, .12), rgba(0, 200, 150, .06));
+        }
+
+        .asm-tile:nth-child(3) {
+            background: linear-gradient(145deg, rgba(244, 67, 54, .1), rgba(244, 67, 54, .05));
+        }
+
+        .asm-tile:nth-child(4) {
+            background: linear-gradient(145deg, rgba(0, 188, 212, .12), rgba(0, 188, 212, .05));
+        }
+
+        .asm-val {
+            font-size: 2vw;
+            font-weight: 900;
+            color: var(--t1);
+        }
+
+        .asm-lbl {
+            font-size: .62vw;
+            font-weight: 800;
+            color: var(--t2);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-top: .3vh;
+        }
 
         /* ATTENDANCE PAGE */
-        .att-page{display:none;height:100%;flex-direction:column;padding:2vh 2.2vw;gap:1.5vh;overflow-y:auto;}
-        .att-page.active{display:flex;}
-        .pg-hdr{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-        .pg-title{font-size:2.2vw;font-weight:900;}
-        .pg-actions{display:flex;gap:1.2vw;}
-        .btn{display:flex;align-items:center;gap:.7vw;padding:1.6vh 2.2vw;border-radius:14px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:1.5vw;font-weight:800;letter-spacing:.5px;text-transform:uppercase;transition:transform .2s,box-shadow .2s;}
-        .btn:hover{transform:translateY(-2px);box-shadow:var(--shd);}
-        .btn-back{background:var(--bg2);color:var(--t1);transition:all .25s;}
-        .btn-back:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));color:white;}
-        .btn-view{background:linear-gradient(110deg,var(--pink),var(--pink-l));color:white;transition:all .25s;}
-        .btn-view:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));box-shadow:0 6px 24px rgba(0,188,212,.35);}
-        .btn-print{background:linear-gradient(110deg,#00C896,#00A878);color:white;transition:all .25s;}
-        .btn-print:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));box-shadow:0 6px 24px rgba(0,188,212,.35);}
-        .cal-card{background:var(--surf);border-radius:22px;padding:2.5vh 2.5vw;box-shadow:var(--sh);flex:1;display:flex;flex-direction:column;min-height:0;}
-        .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:2vh;flex-shrink:0;}
-        .mo-lbl{font-size:2.3vw;font-weight:900;}
-        .nav-grp{display:flex;align-items:center;gap:.8vw;}
-        .nav-b{background:var(--bg2);border:none;border-radius:10px;width:4.2vh;height:4.2vh;cursor:pointer;font-size:.9vw;font-weight:900;color:var(--cyan);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
-        .nav-b:hover{background:linear-gradient(135deg,var(--pink),var(--pink-l));color:white;transform:scale(1.1);}
-        .cal-sel{background:var(--bg2);border:none;border-radius:10px;padding:.8vh 1.2vw;font-family:'Nunito',sans-serif;font-size:2.35vw;font-weight:700;color:var(--t1);cursor:pointer;}
-        .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.5vw;flex:1;min-height:0;}
-        .dh{text-align:center;font-size:1.7vw;font-weight:1000;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:.5vh 0;}
-        .cd{border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.72vw;transition:transform .15s;cursor:default;}
-        .cd.empty{background:transparent;}
-        .cd.future{background:#f1f5f9;opacity:.7;}
-        .cd.full-day{background:#dcfce7;}
-        .cd.half-day{background:#fef3c7;}
-        .cd.absent{background:#fee2e2;}
-        .cd.today{box-shadow:0 0 0 2px #3b82f6;}
-        .cd:not(.empty):hover{transform:scale(1.07);}
-        .cd-n{font-weight:900;font-size:2.5vw;color:var(--t1);}
-        .cd-s{font-size:.99vw;font-weight:800;}
-        .full-day .cd-s{color:var(--ok);}
-        .half-day .cd-s{color:var(--warn);}
-        .absent .cd-s{color:var(--err);}
-        .future .cd-s{color:var(--t3);}
-        .cal-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:1.5vh;flex-shrink:0;}
-        .legend{display:flex;gap:1.5vw;}
-        .leg-i{display:flex;align-items:center;gap:.5vw;font-size:1.3vw;font-weight:700;color:var(--t2);}
-        .leg-d{width:1.1vh;height:1.1vh;border-radius:3px;}
-        .leg-d.fd{background:var(--ok);}
-        .leg-d.hd{background:var(--warn);}
-        .leg-d.ab{background:var(--err);}
-        .sum-row{display:flex;gap:.7vw;}
-        .sum-t{background:var(--bg2);border-radius:12px;padding:1vh 1.3vw;text-align:center;min-width:5.5vw;}
-        .sum-v{font-size:2.2vw;font-weight:900;background:linear-gradient(110deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .sum-l{font-size:1.2vw;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;}
+        .att-page {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            padding: 2vh 2.2vw;
+            gap: 1.5vh;
+            overflow-y: auto;
+        }
+
+        .att-page.active {
+            display: flex;
+        }
+
+        .pg-hdr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .pg-title {
+            font-size: 2.2vw;
+            font-weight: 900;
+        }
+
+        .pg-actions {
+            display: flex;
+            gap: 1.2vw;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: .7vw;
+            padding: 1.6vh 2.2vw;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.5vw;
+            font-weight: 800;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shd);
+        }
+
+        .btn-back {
+            background: var(--bg2);
+            color: var(--t1);
+            transition: all .25s;
+        }
+
+        .btn-back:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            color: white;
+        }
+
+        .btn-view {
+            background: linear-gradient(110deg, var(--pink), var(--pink-l));
+            color: white;
+            transition: all .25s;
+        }
+
+        .btn-view:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            box-shadow: 0 6px 24px rgba(0, 188, 212, .35);
+        }
+
+        .btn-print {
+            background: linear-gradient(110deg, #00C896, #00A878);
+            color: white;
+            transition: all .25s;
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            box-shadow: 0 6px 24px rgba(0, 188, 212, .35);
+        }
+
+        .cal-card {
+            background: var(--surf);
+            border-radius: 22px;
+            padding: 2.5vh 2.5vw;
+            box-shadow: var(--sh);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .cal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2vh;
+            flex-shrink: 0;
+        }
+
+        .mo-lbl {
+            font-size: 2.3vw;
+            font-weight: 900;
+        }
+
+        .nav-grp {
+            display: flex;
+            align-items: center;
+            gap: .8vw;
+        }
+
+        .nav-b {
+            background: var(--bg2);
+            border: none;
+            border-radius: 10px;
+            width: 4.2vh;
+            height: 4.2vh;
+            cursor: pointer;
+            font-size: .9vw;
+            font-weight: 900;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s, transform .2s;
+        }
+
+        .nav-b:hover {
+            background: linear-gradient(135deg, var(--pink), var(--pink-l));
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .cal-sel {
+            background: var(--bg2);
+            border: none;
+            border-radius: 10px;
+            padding: .8vh 1.2vw;
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.35vw;
+            font-weight: 700;
+            color: var(--t1);
+            cursor: pointer;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: .5vw;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .dh {
+            text-align: center;
+            font-size: 1.7vw;
+            font-weight: 1000;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: .5vh 0;
+        }
+
+        .cd {
+            border-radius: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: .72vw;
+            transition: transform .15s;
+            cursor: default;
+        }
+
+        .cd.empty {
+            background: transparent;
+        }
+
+        .cd.future {
+            background: #f1f5f9;
+            opacity: .7;
+        }
+
+        .cd.full-day {
+            background: #dcfce7;
+        }
+
+        .cd.half-day {
+            background: #fef3c7;
+        }
+
+        .cd.absent {
+            background: #fee2e2;
+        }
+
+        .cd.today {
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .cd:not(.empty):hover {
+            transform: scale(1.07);
+        }
+
+        .cd-n {
+            font-weight: 900;
+            font-size: 2.5vw;
+            color: var(--t1);
+        }
+
+        .cd-s {
+            font-size: .99vw;
+            font-weight: 800;
+        }
+
+        .full-day .cd-s {
+            color: var(--ok);
+        }
+
+        .half-day .cd-s {
+            color: var(--warn);
+        }
+
+        .absent .cd-s {
+            color: var(--err);
+        }
+
+        .future .cd-s {
+            color: var(--t3);
+        }
+
+        .cal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 1.5vh;
+            flex-shrink: 0;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1.5vw;
+        }
+
+        .leg-i {
+            display: flex;
+            align-items: center;
+            gap: .5vw;
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: var(--t2);
+        }
+
+        .leg-d {
+            width: 1.1vh;
+            height: 1.1vh;
+            border-radius: 3px;
+        }
+
+        .leg-d.fd {
+            background: var(--ok);
+        }
+
+        .leg-d.hd {
+            background: var(--warn);
+        }
+
+        .leg-d.ab {
+            background: var(--err);
+        }
+
+        .sum-row {
+            display: flex;
+            gap: .7vw;
+        }
+
+        .sum-t {
+            background: var(--bg2);
+            border-radius: 12px;
+            padding: 1vh 1.3vw;
+            text-align: center;
+            min-width: 5.5vw;
+        }
+
+        .sum-v {
+            font-size: 2.2vw;
+            font-weight: 900;
+            background: linear-gradient(110deg, var(--cyan), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sum-l {
+            font-size: 1.2vw;
+            font-weight: 800;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
 
         /* MODAL */
-        .modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(11,39,51,.55);backdrop-filter:blur(6px);justify-content:center;align-items:center;padding:3vh 4vw;}
-        .modal.active{display:flex;}
-        .modal-box{background:var(--surf);border-radius:24px;padding:3.5vh 3.5vw;width:100%;max-width:80vw;max-height:82vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);}
-        .mo-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5vh;}
-        .mo-title{font-size:1.5vw;font-weight:900;}
-        .mo-acts{display:flex;gap:.8vw;}
-        .btn-cl{background:rgba(244,67,54,.1);border:none;color:var(--err);padding:.9vh 1.5vw;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.88vw;font-weight:800;transition:all .25s;}
-        .btn-cl:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));color:white;}
-        .btn-dl-mo{background:linear-gradient(110deg,var(--pink),var(--pink-l));border:none;color:white;padding:.9vh 1.5vw;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.88vw;font-weight:800;display:flex;align-items:center;gap:.4vw;transition:all .25s;}
-        .btn-dl-mo:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));box-shadow:0 6px 24px rgba(0,188,212,.35);}
-        .btn-print-mo{background:linear-gradient(110deg,#00C896,#00A878);border:none;color:white;padding:.9vh 1.5vw;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.88vw;font-weight:800;display:flex;align-items:center;gap:.4vw;transition:all .25s;}
-        .btn-print-mo:hover{background:linear-gradient(110deg,var(--cyan),var(--cyan-l));box-shadow:0 6px 24px rgba(0,188,212,.35);}
-        .report-pre{background:var(--bg2);border-radius:14px;padding:2vh 2vw;font-family:'Space Mono',monospace;font-size:.8vw;line-height:1.7;white-space:pre-wrap;overflow-x:auto;color:var(--t1);}
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(11, 39, 51, .55);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            padding: 3vh 4vw;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--surf);
+            border-radius: 24px;
+            padding: 3.5vh 3.5vw;
+            width: 100%;
+            max-width: 80vw;
+            max-height: 82vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        }
+
+        .mo-hdr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5vh;
+        }
+
+        .mo-title {
+            font-size: 1.5vw;
+            font-weight: 900;
+        }
+
+        .mo-acts {
+            display: flex;
+            gap: .8vw;
+        }
+
+        .btn-cl {
+            background: rgba(244, 67, 54, .1);
+            border: none;
+            color: var(--err);
+            padding: .9vh 1.5vw;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: .88vw;
+            font-weight: 800;
+            transition: all .25s;
+        }
+
+        .btn-cl:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            color: white;
+        }
+
+        .btn-dl-mo {
+            background: linear-gradient(110deg, var(--pink), var(--pink-l));
+            border: none;
+            color: white;
+            padding: .9vh 1.5vw;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: .88vw;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: .4vw;
+            transition: all .25s;
+        }
+
+        .btn-dl-mo:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            box-shadow: 0 6px 24px rgba(0, 188, 212, .35);
+        }
+
+        .btn-print-mo {
+            background: linear-gradient(110deg, #00C896, #00A878);
+            border: none;
+            color: white;
+            padding: .9vh 1.5vw;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: .88vw;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: .4vw;
+            transition: all .25s;
+        }
+
+        .btn-print-mo:hover {
+            background: linear-gradient(110deg, var(--cyan), var(--cyan-l));
+            box-shadow: 0 6px 24px rgba(0, 188, 212, .35);
+        }
+
+        .report-pre {
+            background: var(--bg2);
+            border-radius: 14px;
+            padding: 2vh 2vw;
+            font-family: 'Space Mono', monospace;
+            font-size: .8vw;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            color: var(--t1);
+        }
 
         /* PRINT OVERLAY */
-        .print-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(11,39,51,.7);backdrop-filter:blur(8px);justify-content:center;align-items:center;flex-direction:column;gap:2vh;}
-        .print-overlay.active{display:flex;}
-        .print-spinner{width:8vh;height:8vh;border-radius:50%;border:4px solid rgba(0,188,212,.2);border-top:4px solid var(--cyan);animation:spin 1s linear infinite;}
-        .print-msg{font-size:1.5vw;font-weight:900;color:white;text-align:center;}
-        .print-sub{font-size:.9vw;font-weight:700;color:rgba(255,255,255,.7);}
-        ::-webkit-scrollbar{width:5px;}
-        ::-webkit-scrollbar-track{background:transparent;}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--pink));border-radius:999px;}
+        .print-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(11, 39, 51, .7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 2vh;
+        }
+
+        .print-overlay.active {
+            display: flex;
+        }
+
+        .print-spinner {
+            width: 8vh;
+            height: 8vh;
+            border-radius: 50%;
+            border: 4px solid rgba(0, 188, 212, .2);
+            border-top: 4px solid var(--cyan);
+            animation: spin 1s linear infinite;
+        }
+
+        .print-msg {
+            font-size: 1.5vw;
+            font-weight: 900;
+            color: white;
+            text-align: center;
+        }
+
+        .print-sub {
+            font-size: .9vw;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--cyan), var(--pink));
+            border-radius: 999px;
+        }
     </style>
 </head>
 
@@ -274,7 +1564,9 @@
         <div class="hdr-left">
             <img src="./assets/logo.jpeg" alt="Youngovator Logo" class="logo"
                 onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div style="display:none;width:9vh;height:9vh;border-radius:14px;background:linear-gradient(135deg,#00BCD4,#E91E63);align-items:center;justify-content:center;font-size:3.5vh;font-weight:900;color:white;">Y</div>
+            <div
+                style="display:none;width:9vh;height:9vh;border-radius:14px;background:linear-gradient(135deg,#00BCD4,#E91E63);align-items:center;justify-content:center;font-size:3.5vh;font-weight:900;color:white;">
+                Y</div>
             <div class="co-name">YOUNGOVATOR</div>
         </div>
         <div class="hdr-right">
@@ -296,169 +1588,267 @@
             <div class="robo-panel">
                 <div class="robo-scene">
                     <svg class="robo-svg" viewBox="0 0 320 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="trace" d="M20 420 H80 V380 H140 V340"/>
-                        <path class="trace" d="M300 420 H240 V370 H190 V340"/>
-                        <path class="trace" d="M20 60 H60 V100 H100"/>
-                        <path class="trace" d="M300 60 H260 V90 H220"/>
-                        <path class="trace" d="M160 460 V430 H80 V410"/>
-                        <path class="trace" d="M160 460 V430 H240 V410"/>
-                        <path class="trace-glow" stroke-dasharray="300" d="M20 420 H80 V380 H140 V340"/>
-                        <path class="trace-glow" stroke-dasharray="300" d="M300 420 H240 V370 H190 V340"/>
-                        <path class="trace-glow" stroke-dasharray="300" d="M20 60 H60 V100 H100"/>
-                        <path class="trace-glow" stroke-dasharray="300" d="M300 60 H260 V90 H220"/>
-                        <circle class="node" cx="80" cy="380" r="3" fill="#00BCD4"/>
-                        <circle class="node" cx="140" cy="340" r="3" fill="#E91E63"/>
-                        <circle class="node" cx="240" cy="370" r="3" fill="#00BCD4"/>
-                        <circle class="node" cx="190" cy="340" r="3" fill="#E91E63"/>
-                        <circle class="node" cx="60" cy="100" r="3" fill="#00BCD4"/>
-                        <circle class="node" cx="260" cy="90" r="3" fill="#E91E63"/>
-                        <circle class="node" cx="80" cy="410" r="3" fill="#00BCD4"/>
-                        <circle class="node" cx="240" cy="410" r="3" fill="#E91E63"/>
+                        <path class="trace" d="M20 420 H80 V380 H140 V340" />
+                        <path class="trace" d="M300 420 H240 V370 H190 V340" />
+                        <path class="trace" d="M20 60 H60 V100 H100" />
+                        <path class="trace" d="M300 60 H260 V90 H220" />
+                        <path class="trace" d="M160 460 V430 H80 V410" />
+                        <path class="trace" d="M160 460 V430 H240 V410" />
+                        <path class="trace-glow" stroke-dasharray="300" d="M20 420 H80 V380 H140 V340" />
+                        <path class="trace-glow" stroke-dasharray="300" d="M300 420 H240 V370 H190 V340" />
+                        <path class="trace-glow" stroke-dasharray="300" d="M20 60 H60 V100 H100" />
+                        <path class="trace-glow" stroke-dasharray="300" d="M300 60 H260 V90 H220" />
+                        <circle class="node" cx="80" cy="380" r="3" fill="#00BCD4" />
+                        <circle class="node" cx="140" cy="340" r="3" fill="#E91E63" />
+                        <circle class="node" cx="240" cy="370" r="3" fill="#00BCD4" />
+                        <circle class="node" cx="190" cy="340" r="3" fill="#E91E63" />
+                        <circle class="node" cx="60" cy="100" r="3" fill="#00BCD4" />
+                        <circle class="node" cx="260" cy="90" r="3" fill="#E91E63" />
+                        <circle class="node" cx="80" cy="410" r="3" fill="#00BCD4" />
+                        <circle class="node" cx="240" cy="410" r="3" fill="#E91E63" />
                         <g class="gear-big">
-                            <circle cx="70" cy="340" r="26" fill="none" stroke="#00BCD4" stroke-width="3" opacity=".5"/>
-                            <circle cx="70" cy="340" r="18" fill="rgba(0,188,212,.08)" stroke="#00BCD4" stroke-width="2" opacity=".7"/>
-                            <rect x="66" y="311" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6"/>
-                            <rect x="66" y="361" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6"/>
-                            <rect x="41" y="336" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6"/>
-                            <rect x="91" y="336" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6"/>
-                            <rect x="49" y="318" width="8" height="8" rx="1" fill="#00BCD4" opacity=".4" transform="rotate(45 53 322)"/>
-                            <rect x="84" y="318" width="8" height="8" rx="1" fill="#00BCD4" opacity=".4" transform="rotate(-45 88 322)"/>
-                            <circle cx="70" cy="340" r="6" fill="#00BCD4" opacity=".8"/>
+                            <circle cx="70" cy="340" r="26" fill="none" stroke="#00BCD4" stroke-width="3"
+                                opacity=".5" />
+                            <circle cx="70" cy="340" r="18" fill="rgba(0,188,212,.08)" stroke="#00BCD4" stroke-width="2"
+                                opacity=".7" />
+                            <rect x="66" y="311" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6" />
+                            <rect x="66" y="361" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6" />
+                            <rect x="41" y="336" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6" />
+                            <rect x="91" y="336" width="8" height="8" rx="1" fill="#00BCD4" opacity=".6" />
+                            <rect x="49" y="318" width="8" height="8" rx="1" fill="#00BCD4" opacity=".4"
+                                transform="rotate(45 53 322)" />
+                            <rect x="84" y="318" width="8" height="8" rx="1" fill="#00BCD4" opacity=".4"
+                                transform="rotate(-45 88 322)" />
+                            <circle cx="70" cy="340" r="6" fill="#00BCD4" opacity=".8" />
                         </g>
                         <g class="gear-small">
-                            <circle cx="108" cy="353" r="14" fill="none" stroke="#E91E63" stroke-width="2" opacity=".5"/>
-                            <circle cx="108" cy="353" r="9" fill="rgba(233,30,99,.08)" stroke="#E91E63" stroke-width="1.5" opacity=".7"/>
-                            <rect x="105" y="337" width="6" height="6" rx="1" fill="#E91E63" opacity=".6"/>
-                            <rect x="105" y="364" width="6" height="6" rx="1" fill="#E91E63" opacity=".6"/>
-                            <rect x="118" y="350" width="6" height="6" rx="1" fill="#E91E63" opacity=".6"/>
-                            <circle cx="108" cy="353" r="4" fill="#E91E63" opacity=".8"/>
+                            <circle cx="108" cy="353" r="14" fill="none" stroke="#E91E63" stroke-width="2"
+                                opacity=".5" />
+                            <circle cx="108" cy="353" r="9" fill="rgba(233,30,99,.08)" stroke="#E91E63"
+                                stroke-width="1.5" opacity=".7" />
+                            <rect x="105" y="337" width="6" height="6" rx="1" fill="#E91E63" opacity=".6" />
+                            <rect x="105" y="364" width="6" height="6" rx="1" fill="#E91E63" opacity=".6" />
+                            <rect x="118" y="350" width="6" height="6" rx="1" fill="#E91E63" opacity=".6" />
+                            <circle cx="108" cy="353" r="4" fill="#E91E63" opacity=".8" />
                         </g>
                         <g class="robot-body">
-                            <rect x="110" y="200" width="100" height="90" rx="12" fill="rgba(0,188,212,.12)" stroke="#00BCD4" stroke-width="2"/>
-                            <rect x="125" y="215" width="70" height="40" rx="8" fill="rgba(0,188,212,.08)" stroke="#00BCD4" stroke-width="1.5" opacity=".7"/>
-                            <circle cx="140" cy="232" r="5" fill="#00BCD4" opacity=".9" style="animation:nodeBlink 1.5s ease-in-out infinite"/>
-                            <circle cx="160" cy="232" r="5" fill="#E91E63" opacity=".9" style="animation:nodeBlink 2s ease-in-out infinite .5s"/>
-                            <circle cx="180" cy="232" r="5" fill="#FFF176" opacity=".9" style="animation:nodeBlink 2.5s ease-in-out infinite 1s"/>
-                            <rect x="130" y="245" width="60" height="4" rx="2" fill="#00BCD4" opacity=".4"/>
-                            <rect x="120" y="148" width="80" height="55" rx="14" fill="rgba(0,188,212,.13)" stroke="#00BCD4" stroke-width="2"/>
-                            <line x1="160" y1="148" x2="160" y2="128" stroke="#00BCD4" stroke-width="2"/>
-                            <circle cx="160" cy="122" r="7" fill="#00BCD4" opacity=".8" style="animation:nodeBlink 1.8s ease-in-out infinite"/>
-                            <rect x="133" y="162" width="20" height="14" rx="5" fill="#00BCD4" opacity=".15"/>
-                            <rect x="167" y="162" width="20" height="14" rx="5" fill="#00BCD4" opacity=".15"/>
-                            <circle class="eye-l" cx="143" cy="169" r="6" fill="#00BCD4"/>
-                            <circle class="eye-r" cx="177" cy="169" r="6" fill="#00BCD4"/>
-                            <circle cx="144" cy="168" r="2" fill="white" opacity=".8"/>
-                            <circle cx="178" cy="168" r="2" fill="white" opacity=".8"/>
-                            <path d="M148 185 Q160 193 172 185" stroke="#00BCD4" stroke-width="2" fill="none" opacity=".7"/>
-                            <rect x="125" y="290" width="28" height="50" rx="8" fill="rgba(0,188,212,.1)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <rect x="167" y="290" width="28" height="50" rx="8" fill="rgba(0,188,212,.1)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <rect x="122" y="335" width="34" height="12" rx="5" fill="rgba(0,188,212,.15)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <rect x="164" y="335" width="34" height="12" rx="5" fill="rgba(0,188,212,.15)" stroke="#00BCD4" stroke-width="1.5"/>
+                            <rect x="110" y="200" width="100" height="90" rx="12" fill="rgba(0,188,212,.12)"
+                                stroke="#00BCD4" stroke-width="2" />
+                            <rect x="125" y="215" width="70" height="40" rx="8" fill="rgba(0,188,212,.08)"
+                                stroke="#00BCD4" stroke-width="1.5" opacity=".7" />
+                            <circle cx="140" cy="232" r="5" fill="#00BCD4" opacity=".9"
+                                style="animation:nodeBlink 1.5s ease-in-out infinite" />
+                            <circle cx="160" cy="232" r="5" fill="#E91E63" opacity=".9"
+                                style="animation:nodeBlink 2s ease-in-out infinite .5s" />
+                            <circle cx="180" cy="232" r="5" fill="#FFF176" opacity=".9"
+                                style="animation:nodeBlink 2.5s ease-in-out infinite 1s" />
+                            <rect x="130" y="245" width="60" height="4" rx="2" fill="#00BCD4" opacity=".4" />
+                            <rect x="120" y="148" width="80" height="55" rx="14" fill="rgba(0,188,212,.13)"
+                                stroke="#00BCD4" stroke-width="2" />
+                            <line x1="160" y1="148" x2="160" y2="128" stroke="#00BCD4" stroke-width="2" />
+                            <circle cx="160" cy="122" r="7" fill="#00BCD4" opacity=".8"
+                                style="animation:nodeBlink 1.8s ease-in-out infinite" />
+                            <rect x="133" y="162" width="20" height="14" rx="5" fill="#00BCD4" opacity=".15" />
+                            <rect x="167" y="162" width="20" height="14" rx="5" fill="#00BCD4" opacity=".15" />
+                            <circle class="eye-l" cx="143" cy="169" r="6" fill="#00BCD4" />
+                            <circle class="eye-r" cx="177" cy="169" r="6" fill="#00BCD4" />
+                            <circle cx="144" cy="168" r="2" fill="white" opacity=".8" />
+                            <circle cx="178" cy="168" r="2" fill="white" opacity=".8" />
+                            <path d="M148 185 Q160 193 172 185" stroke="#00BCD4" stroke-width="2" fill="none"
+                                opacity=".7" />
+                            <rect x="125" y="290" width="28" height="50" rx="8" fill="rgba(0,188,212,.1)"
+                                stroke="#00BCD4" stroke-width="1.5" />
+                            <rect x="167" y="290" width="28" height="50" rx="8" fill="rgba(0,188,212,.1)"
+                                stroke="#00BCD4" stroke-width="1.5" />
+                            <rect x="122" y="335" width="34" height="12" rx="5" fill="rgba(0,188,212,.15)"
+                                stroke="#00BCD4" stroke-width="1.5" />
+                            <rect x="164" y="335" width="34" height="12" rx="5" fill="rgba(0,188,212,.15)"
+                                stroke="#00BCD4" stroke-width="1.5" />
                         </g>
-                        <rect x="261" y="270" width="34" height="6" rx="3" fill="rgba(0,188,212,.25)" stroke="#00BCD4" stroke-width="1.5"/>
+                        <rect x="261" y="270" width="34" height="6" rx="3" fill="rgba(0,188,212,.25)" stroke="#00BCD4"
+                            stroke-width="1.5" />
                         <rect x="263" y="266" width="30" height="3" rx="1.5" fill="#00BCD4">
-                            <animate attributeName="opacity" values="0.1;0.1;0.35;0.35;0.1;0.1;0.35;0.35" keyTimes="0;0.26;0.38;0.55;0.65;0.80;0.88;1" dur="9s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.1;0.1;0.35;0.35;0.1;0.1;0.35;0.35"
+                                keyTimes="0;0.26;0.38;0.55;0.65;0.80;0.88;1" dur="9s" repeatCount="indefinite" />
                         </rect>
                         <g>
-                            <rect x="269" y="254" width="20" height="16" rx="4" fill="rgba(0,188,212,.45)" stroke="#00BCD4" stroke-width="2">
-                                <animate attributeName="opacity" values="0;0;0;1;1;1;1;0;0" keyTimes="0;0.26;0.34;0.40;0.55;0.65;0.80;0.84;1" dur="9s" repeatCount="indefinite"/>
+                            <rect x="269" y="254" width="20" height="16" rx="4" fill="rgba(0,188,212,.45)"
+                                stroke="#00BCD4" stroke-width="2">
+                                <animate attributeName="opacity" values="0;0;0;1;1;1;1;0;0"
+                                    keyTimes="0;0.26;0.34;0.40;0.55;0.65;0.80;0.84;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </rect>
                             <circle cx="279" cy="267" r="2.5" fill="#00BCD4">
-                                <animate attributeName="opacity" values="0;0;0;0.9;0.9;0.9;0.9;0;0" keyTimes="0;0.26;0.34;0.40;0.55;0.65;0.80;0.84;1" dur="9s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0;0;0;0.9;0.9;0.9;0.9;0;0"
+                                    keyTimes="0;0.26;0.34;0.40;0.55;0.65;0.80;0.84;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </circle>
                         </g>
                         <g>
-                            <animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 210 219;0 210 219;38 210 219;38 210 219;-28 210 219;-28 210 219;8 210 219;8 210 219;0 210 219" keyTimes="0;0.08;0.28;0.36;0.52;0.62;0.76;0.86;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="9s" begin="4.5s" repeatCount="indefinite"/>
-                            <circle cx="210" cy="219" r="9" fill="rgba(0,188,212,.22)" stroke="#00BCD4" stroke-width="1.8"/>
-                            <rect x="210" y="212" width="47" height="14" rx="7" fill="rgba(0,188,212,.2)" stroke="#00BCD4" stroke-width="1.8"/>
-                            <circle cx="255" cy="219" r="7" fill="rgba(0,188,212,.28)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <rect x="254" y="213" width="44" height="12" rx="6" fill="rgba(0,188,212,.16)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <circle cx="296" cy="219" r="6" fill="rgba(0,188,212,.3)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="299" y1="219" x2="308" y2="212">
-                                <animate attributeName="x2" values="308;308;304;304;308;308;304;304;308" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s" repeatCount="indefinite"/>
-                                <animate attributeName="y2" values="212;212;216;216;212;212;216;216;212" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s" repeatCount="indefinite"/>
+                            <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+                                values="0 210 219;0 210 219;38 210 219;38 210 219;-28 210 219;-28 210 219;8 210 219;8 210 219;0 210 219"
+                                keyTimes="0;0.08;0.28;0.36;0.52;0.62;0.76;0.86;1" calcMode="spline"
+                                keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                                dur="9s" begin="4.5s" repeatCount="indefinite" />
+                            <circle cx="210" cy="219" r="9" fill="rgba(0,188,212,.22)" stroke="#00BCD4"
+                                stroke-width="1.8" />
+                            <rect x="210" y="212" width="47" height="14" rx="7" fill="rgba(0,188,212,.2)"
+                                stroke="#00BCD4" stroke-width="1.8" />
+                            <circle cx="255" cy="219" r="7" fill="rgba(0,188,212,.28)" stroke="#00BCD4"
+                                stroke-width="1.5" />
+                            <rect x="254" y="213" width="44" height="12" rx="6" fill="rgba(0,188,212,.16)"
+                                stroke="#00BCD4" stroke-width="1.5" />
+                            <circle cx="296" cy="219" r="6" fill="rgba(0,188,212,.3)" stroke="#00BCD4"
+                                stroke-width="1.5" />
+                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="299" y1="219" x2="308"
+                                y2="212">
+                                <animate attributeName="x2" values="308;308;304;304;308;308;304;304;308"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="y2" values="212;212;216;216;212;212;216;216;212"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s"
+                                    repeatCount="indefinite" />
                             </line>
-                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="299" y1="219" x2="308" y2="226">
-                                <animate attributeName="x2" values="308;308;304;304;308;308;304;304;308" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s" repeatCount="indefinite"/>
-                                <animate attributeName="y2" values="226;226;222;222;226;226;222;222;226" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s" repeatCount="indefinite"/>
+                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="299" y1="219" x2="308"
+                                y2="226">
+                                <animate attributeName="x2" values="308;308;304;304;308;308;304;304;308"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="y2" values="226;226;222;222;226;226;222;222;226"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" begin="4.5s"
+                                    repeatCount="indefinite" />
                             </line>
                         </g>
-                        <rect x="100" y="390" width="120" height="36" rx="18" fill="rgba(0,188,212,.08)" stroke="#00BCD4" stroke-width="1" opacity=".6"/>
-                        <text x="160" y="414" text-anchor="middle" font-family="'Nunito',sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="#00BCD4">
+                        <rect x="100" y="390" width="120" height="36" rx="18" fill="rgba(0,188,212,.08)"
+                            stroke="#00BCD4" stroke-width="1" opacity=".6" />
+                        <text x="160" y="414" text-anchor="middle" font-family="'Nunito',sans-serif" font-weight="900"
+                            font-size="22" letter-spacing="4" fill="#00BCD4">
                             WELCOME
-                            <animate attributeName="opacity" values="0.5;1;0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.5;1;0.5;1;0.5" dur="3s"
+                                repeatCount="indefinite" />
                         </text>
-                        <circle cx="108" cy="408" r="3" fill="#E91E63" opacity=".8"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" repeatCount="indefinite"/></circle>
-                        <circle cx="212" cy="408" r="3" fill="#E91E63" opacity=".8"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/></circle>
-                        <rect x="25" y="270" width="34" height="6" rx="3" fill="rgba(0,188,212,.25)" stroke="#00BCD4" stroke-width="1.5"/>
+                        <circle cx="108" cy="408" r="3" fill="#E91E63" opacity=".8">
+                            <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="212" cy="408" r="3" fill="#E91E63" opacity=".8">
+                            <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                        <rect x="25" y="270" width="34" height="6" rx="3" fill="rgba(0,188,212,.25)" stroke="#00BCD4"
+                            stroke-width="1.5" />
                         <rect x="27" y="266" width="30" height="3" rx="1.5" fill="#00BCD4">
-                            <animate attributeName="opacity" values="0.35;0.35;0.1;0.1;0.1;0.1;0.35;0.35" keyTimes="0;0.26;0.38;0.55;0.65;0.80;0.88;1" dur="9s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.35;0.35;0.1;0.1;0.1;0.1;0.35;0.35"
+                                keyTimes="0;0.26;0.38;0.55;0.65;0.80;0.88;1" dur="9s" repeatCount="indefinite" />
                         </rect>
                         <g>
-                            <rect x="31" y="254" width="20" height="16" rx="4" fill="rgba(0,188,212,.45)" stroke="#00BCD4" stroke-width="2">
-                                <animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1" keyTimes="0;0.26;0.34;0.38;0.55;0.65;0.80;0.84;1" dur="9s" repeatCount="indefinite"/>
+                            <rect x="31" y="254" width="20" height="16" rx="4" fill="rgba(0,188,212,.45)"
+                                stroke="#00BCD4" stroke-width="2">
+                                <animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1"
+                                    keyTimes="0;0.26;0.34;0.38;0.55;0.65;0.80;0.84;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </rect>
                             <circle cx="41" cy="267" r="2.5" fill="#00BCD4">
-                                <animate attributeName="opacity" values="0.9;0.9;0.9;0;0;0;0;0.9;0.9" keyTimes="0;0.26;0.34;0.38;0.55;0.65;0.80;0.84;1" dur="9s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0.9;0.9;0.9;0;0;0;0;0.9;0.9"
+                                    keyTimes="0;0.26;0.34;0.38;0.55;0.65;0.80;0.84;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </circle>
                         </g>
                         <g>
-                            <animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 110 219;0 110 219;-38 110 219;-38 110 219;28 110 219;28 110 219;-8 110 219;-8 110 219;0 110 219" keyTimes="0;0.08;0.28;0.36;0.52;0.62;0.76;0.86;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="9s" repeatCount="indefinite"/>
-                            <circle cx="110" cy="219" r="9" fill="rgba(0,188,212,.22)" stroke="#00BCD4" stroke-width="1.8"/>
-                            <rect x="63" y="212" width="47" height="14" rx="7" fill="rgba(0,188,212,.2)" stroke="#00BCD4" stroke-width="1.8"/>
-                            <circle cx="65" cy="219" r="7" fill="rgba(0,188,212,.28)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <rect x="22" y="213" width="44" height="12" rx="6" fill="rgba(0,188,212,.16)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <circle cx="24" cy="219" r="6" fill="rgba(0,188,212,.3)" stroke="#00BCD4" stroke-width="1.5"/>
-                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="21" y1="219" x2="12" y2="212">
-                                <animate attributeName="x2" values="12;12;16;16;12;12;16;16;12" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" repeatCount="indefinite"/>
-                                <animate attributeName="y2" values="212;212;216;216;212;212;216;216;212" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" repeatCount="indefinite"/>
+                            <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+                                values="0 110 219;0 110 219;-38 110 219;-38 110 219;28 110 219;28 110 219;-8 110 219;-8 110 219;0 110 219"
+                                keyTimes="0;0.08;0.28;0.36;0.52;0.62;0.76;0.86;1" calcMode="spline"
+                                keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+                                dur="9s" repeatCount="indefinite" />
+                            <circle cx="110" cy="219" r="9" fill="rgba(0,188,212,.22)" stroke="#00BCD4"
+                                stroke-width="1.8" />
+                            <rect x="63" y="212" width="47" height="14" rx="7" fill="rgba(0,188,212,.2)"
+                                stroke="#00BCD4" stroke-width="1.8" />
+                            <circle cx="65" cy="219" r="7" fill="rgba(0,188,212,.28)" stroke="#00BCD4"
+                                stroke-width="1.5" />
+                            <rect x="22" y="213" width="44" height="12" rx="6" fill="rgba(0,188,212,.16)"
+                                stroke="#00BCD4" stroke-width="1.5" />
+                            <circle cx="24" cy="219" r="6" fill="rgba(0,188,212,.3)" stroke="#00BCD4"
+                                stroke-width="1.5" />
+                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="21" y1="219" x2="12"
+                                y2="212">
+                                <animate attributeName="x2" values="12;12;16;16;12;12;16;16;12"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="y2" values="212;212;216;216;212;212;216;216;212"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </line>
-                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="21" y1="219" x2="12" y2="226">
-                                <animate attributeName="x2" values="12;12;16;16;12;12;16;16;12" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" repeatCount="indefinite"/>
-                                <animate attributeName="y2" values="226;226;222;222;226;226;222;222;226" keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s" repeatCount="indefinite"/>
+                            <line stroke="#00BCD4" stroke-width="3" stroke-linecap="round" x1="21" y1="219" x2="12"
+                                y2="226">
+                                <animate attributeName="x2" values="12;12;16;16;12;12;16;16;12"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="y2" values="226;226;222;222;226;226;222;222;226"
+                                    keyTimes="0;0.30;0.36;0.62;0.68;0.76;0.82;0.86;1" dur="9s"
+                                    repeatCount="indefinite" />
                             </line>
                             <g>
-                                <rect x="5" y="212" width="17" height="13" rx="3" fill="rgba(0,188,212,.55)" stroke="#00BCD4" stroke-width="2">
-                                    <animate attributeName="opacity" values="0;0;0;1;1;1;0;0;0" keyTimes="0;0.34;0.40;0.44;0.55;0.65;0.78;0.82;1" dur="9s" repeatCount="indefinite"/>
+                                <rect x="5" y="212" width="17" height="13" rx="3" fill="rgba(0,188,212,.55)"
+                                    stroke="#00BCD4" stroke-width="2">
+                                    <animate attributeName="opacity" values="0;0;0;1;1;1;0;0;0"
+                                        keyTimes="0;0.34;0.40;0.44;0.55;0.65;0.78;0.82;1" dur="9s"
+                                        repeatCount="indefinite" />
                                 </rect>
                                 <circle cx="13" cy="221" r="2" fill="#4DD0E1">
-                                    <animate attributeName="opacity" values="0;0;0;0.9;0.9;0.9;0;0;0" keyTimes="0;0.34;0.40;0.44;0.55;0.65;0.78;0.82;1" dur="9s" repeatCount="indefinite"/>
+                                    <animate attributeName="opacity" values="0;0;0;0.9;0.9;0.9;0;0;0"
+                                        keyTimes="0;0.34;0.40;0.44;0.55;0.65;0.78;0.82;1" dur="9s"
+                                        repeatCount="indefinite" />
                                 </circle>
                             </g>
                         </g>
                         <g class="scan-line">
-                            <rect x="95" y="145" width="130" height="2" rx="1" fill="url(#scanGrad)" opacity=".75"/>
-                            <rect x="80" y="148" width="160" height="1" rx="1" fill="rgba(0,188,212,.25)"/>
+                            <rect x="95" y="145" width="130" height="2" rx="1" fill="url(#scanGrad)" opacity=".75" />
+                            <rect x="80" y="148" width="160" height="1" rx="1" fill="rgba(0,188,212,.25)" />
                         </g>
                         <defs>
                             <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="transparent"/>
-                                <stop offset="50%" stop-color="#00BCD4"/>
-                                <stop offset="100%" stop-color="transparent"/>
+                                <stop offset="0%" stop-color="transparent" />
+                                <stop offset="50%" stop-color="#00BCD4" />
+                                <stop offset="100%" stop-color="transparent" />
                             </linearGradient>
                         </defs>
                         <g transform="translate(160,122)">
-                            <circle class="pulse-ring"/>
-                            <circle class="pulse-ring"/>
-                            <circle class="pulse-ring"/>
+                            <circle class="pulse-ring" />
+                            <circle class="pulse-ring" />
+                            <circle class="pulse-ring" />
                         </g>
-                        <circle class="particle" r="4"><animateMotion dur="9s" repeatCount="indefinite" begin="0s" path="M20,420 H80 V380 H140 V340 V300 V200 V150"/></circle>
-                        <circle class="particle" r="4"><animateMotion dur="9s" repeatCount="indefinite" begin="2s" path="M300,420 H240 V370 H190 V340 V300 V200 V150"/></circle>
-                        <circle class="particle" r="3"><animateMotion dur="9s" repeatCount="indefinite" begin="4s" path="M20,200 H80 V220 H110 V200"/></circle>
-                        <circle class="particle" r="3"><animateMotion dur="9s" repeatCount="indefinite" begin="6s" path="M160,460 V430 H80 V410 V380"/></circle>
-                        <path d="M10 40 L10 10 L40 10" stroke="#00BCD4" stroke-width="2" fill="none" opacity=".4"/>
-                        <path d="M310 40 L310 10 L280 10" stroke="#E91E63" stroke-width="2" fill="none" opacity=".4"/>
-                        <path d="M10 440 L10 470 L40 470" stroke="#E91E63" stroke-width="2" fill="none" opacity=".4"/>
-                        <path d="M310 440 L310 470 L280 470" stroke="#00BCD4" stroke-width="2" fill="none" opacity=".4"/>
-                        <rect x="130" y="218" width="60" height="33" rx="6" fill="rgba(0,0,0,.25)" opacity=".6"/>
-                        <text x="160" y="231" fill="#00BCD4" font-size="6" font-family="monospace" text-anchor="middle" opacity=".9">YOUNGOVATOR</text>
-                        <text x="160" y="240" fill="#4DD0E1" font-size="5" font-family="monospace" text-anchor="middle" opacity=".7">RFID SYSTEM</text>
+                        <circle class="particle" r="4">
+                            <animateMotion dur="9s" repeatCount="indefinite" begin="0s"
+                                path="M20,420 H80 V380 H140 V340 V300 V200 V150" />
+                        </circle>
+                        <circle class="particle" r="4">
+                            <animateMotion dur="9s" repeatCount="indefinite" begin="2s"
+                                path="M300,420 H240 V370 H190 V340 V300 V200 V150" />
+                        </circle>
+                        <circle class="particle" r="3">
+                            <animateMotion dur="9s" repeatCount="indefinite" begin="4s"
+                                path="M20,200 H80 V220 H110 V200" />
+                        </circle>
+                        <circle class="particle" r="3">
+                            <animateMotion dur="9s" repeatCount="indefinite" begin="6s"
+                                path="M160,460 V430 H80 V410 V380" />
+                        </circle>
+                        <path d="M10 40 L10 10 L40 10" stroke="#00BCD4" stroke-width="2" fill="none" opacity=".4" />
+                        <path d="M310 40 L310 10 L280 10" stroke="#E91E63" stroke-width="2" fill="none" opacity=".4" />
+                        <path d="M10 440 L10 470 L40 470" stroke="#E91E63" stroke-width="2" fill="none" opacity=".4" />
+                        <path d="M310 440 L310 470 L280 470" stroke="#00BCD4" stroke-width="2" fill="none"
+                            opacity=".4" />
+                        <rect x="130" y="218" width="60" height="33" rx="6" fill="rgba(0,0,0,.25)" opacity=".6" />
+                        <text x="160" y="231" fill="#00BCD4" font-size="6" font-family="monospace" text-anchor="middle"
+                            opacity=".9">YOUNGOVATOR</text>
+                        <text x="160" y="240" fill="#4DD0E1" font-size="5" font-family="monospace" text-anchor="middle"
+                            opacity=".7">RFID SYSTEM</text>
                         <rect x="133" y="243" width="54" height="3" rx="1.5" fill="#00BCD4" opacity=".3">
-                            <animate attributeName="width" values="0;54;0" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="width" values="0;54;0" dur="3s" repeatCount="indefinite" />
                         </rect>
                     </svg>
                 </div>
-                <div class="robo-title">⚡ <span>Where Innovation Meets Intelligence</span> — Building Tomorrow's Engineers Today</div>
+                <div class="robo-title">⚡ <span>Where Innovation Meets Intelligence</span> — Building Tomorrow's
+                    Engineers Today</div>
             </div>
 
             <div class="scan-panel">
@@ -472,36 +1862,45 @@
                 <div class="scan-card">
                     <div class="sc-icon">
                         <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="8" y="18" width="46" height="30" rx="4" fill="white" stroke="#00BCD4" stroke-width="2"/>
-                            <rect x="8" y="25" width="46" height="7" fill="#00BCD4" opacity="0.25"/>
-                            <rect x="15" y="34" width="10" height="8" rx="2" fill="none" stroke="#00BCD4" stroke-width="1.5"/>
-                            <line x1="20" y1="34" x2="20" y2="42" stroke="#00BCD4" stroke-width="1" opacity="0.6"/>
-                            <line x1="15" y1="38" x2="25" y2="38" stroke="#00BCD4" stroke-width="1" opacity="0.6"/>
-                            <rect x="30" y="36" width="6" height="2" rx="1" fill="#00BCD4" opacity="0.4"/>
-                            <rect x="30" y="40" width="10" height="2" rx="1" fill="#00BCD4" opacity="0.3"/>
+                            <rect x="8" y="18" width="46" height="30" rx="4" fill="white" stroke="#00BCD4"
+                                stroke-width="2" />
+                            <rect x="8" y="25" width="46" height="7" fill="#00BCD4" opacity="0.25" />
+                            <rect x="15" y="34" width="10" height="8" rx="2" fill="none" stroke="#00BCD4"
+                                stroke-width="1.5" />
+                            <line x1="20" y1="34" x2="20" y2="42" stroke="#00BCD4" stroke-width="1" opacity="0.6" />
+                            <line x1="15" y1="38" x2="25" y2="38" stroke="#00BCD4" stroke-width="1" opacity="0.6" />
+                            <rect x="30" y="36" width="6" height="2" rx="1" fill="#00BCD4" opacity="0.4" />
+                            <rect x="30" y="40" width="10" height="2" rx="1" fill="#00BCD4" opacity="0.3" />
                             <rect x="8" y="33" width="46" height="3" rx="1.5" fill="url(#beamGrad)" opacity="0.85">
-                                <animate attributeName="y" values="18;45;18" dur="2s" repeatCount="indefinite" calcMode="ease-in-out"/>
-                                <animate attributeName="opacity" values="0;0.9;0.9;0;0" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="y" values="18;45;18" dur="2s" repeatCount="indefinite"
+                                    calcMode="ease-in-out" />
+                                <animate attributeName="opacity" values="0;0.9;0.9;0;0" dur="2s"
+                                    repeatCount="indefinite" />
                             </rect>
-                            <path d="M62 28 Q70 33 70 36 Q70 39 62 44" stroke="#00BCD4" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.9">
-                                <animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" repeatCount="indefinite"/>
+                            <path d="M62 28 Q70 33 70 36 Q70 39 62 44" stroke="#00BCD4" stroke-width="2" fill="none"
+                                stroke-linecap="round" opacity="0.9">
+                                <animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s"
+                                    repeatCount="indefinite" />
                             </path>
-                            <path d="M65 24 Q76 30 76 36 Q76 42 65 48" stroke="#00BCD4" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6">
-                                <animate attributeName="opacity" values="0;0.7;0" dur="1.4s" begin="0.2s" repeatCount="indefinite"/>
+                            <path d="M65 24 Q76 30 76 36 Q76 42 65 48" stroke="#00BCD4" stroke-width="2" fill="none"
+                                stroke-linecap="round" opacity="0.6">
+                                <animate attributeName="opacity" values="0;0.7;0" dur="1.4s" begin="0.2s"
+                                    repeatCount="indefinite" />
                             </path>
                             <defs>
                                 <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stop-color="transparent"/>
-                                    <stop offset="40%" stop-color="#00BCD4"/>
-                                    <stop offset="60%" stop-color="#4DD0E1"/>
-                                    <stop offset="100%" stop-color="transparent"/>
+                                    <stop offset="0%" stop-color="transparent" />
+                                    <stop offset="40%" stop-color="#00BCD4" />
+                                    <stop offset="60%" stop-color="#4DD0E1" />
+                                    <stop offset="100%" stop-color="transparent" />
                                 </linearGradient>
                             </defs>
                         </svg>
                     </div>
                     <div class="sc-title">SCAN YOUR RFID CARD</div>
                     <div class="sc-hint">Hold card flat against the reader surface</div>
-                    <div id="scanIndicator" class="sc-status listening">&#x25BA;&nbsp;Listening for card scan&hellip;</div>
+                    <div id="scanIndicator" class="sc-status listening">&#x25BA;&nbsp;Listening for card scan&hellip;
+                    </div>
 
                     <!-- Absolute overlay: pops up on top of the card, no layout shift -->
                     <div id="detectedNameWrap" class="detected-name-wrap">
@@ -531,47 +1930,84 @@
                 <div class="p-badge">🎓 Youngovator Student</div>
                 <div class="info-block">
                     <div class="info-sec-title">Personal Details</div>
-                    <div class="info-row"><span class="i-lbl">Student ID</span><span class="i-val" id="profId2">---</span></div>
-                    <div class="info-row"><span class="i-lbl">Father's Name</span><span class="i-val" id="profFather">---</span></div>
-                    <div class="info-row"><span class="i-lbl">Address</span><span class="i-val" id="profAddress">---</span></div>
-                    <div class="info-row"><span class="i-lbl">RFID UID</span><span class="i-val" id="profUID">---</span></div>
+                    <div class="info-row"><span class="i-lbl">Student ID</span><span class="i-val"
+                            id="profId2">---</span></div>
+                    <div class="info-row"><span class="i-lbl">Father's Name</span><span class="i-val"
+                            id="profFather">---</span></div>
+                    <div class="info-row"><span class="i-lbl">Address</span><span class="i-val"
+                            id="profAddress">---</span></div>
+                    <div class="info-row"><span class="i-lbl">RFID UID</span><span class="i-val" id="profUID">---</span>
+                    </div>
                 </div>
                 <div class="stat-strip">
-                    <div class="ss-tile"><div class="ss-val" id="statTotal">0</div><div class="ss-lbl">Total Days</div></div>
-                    <div class="ss-tile"><div class="ss-val" id="statPresent">0</div><div class="ss-lbl">Present</div></div>
-                    <div class="ss-tile"><div class="ss-val" id="statAbsent">0</div><div class="ss-lbl">Absent</div></div>
+                    <div class="ss-tile">
+                        <div class="ss-val" id="statTotal">0</div>
+                        <div class="ss-lbl">Total Days</div>
+                    </div>
+                    <div class="ss-tile">
+                        <div class="ss-val" id="statPresent">0</div>
+                        <div class="ss-lbl">Present</div>
+                    </div>
+                    <div class="ss-tile">
+                        <div class="ss-val" id="statAbsent">0</div>
+                        <div class="ss-lbl">Absent</div>
+                    </div>
                 </div>
             </div>
             <div class="action-panel">
                 <div class="act-col">
                     <button class="act-btn" onclick="viewAttendance()">
                         <div class="act-icon act-icon-cal">&#x25A6;</div>
-                        <div class="act-txt"><div class="act-name">Attendance</div><div class="act-sub">View monthly calendar</div></div>
+                        <div class="act-txt">
+                            <div class="act-name">Attendance</div>
+                            <div class="act-sub">View monthly calendar</div>
+                        </div>
                         <div class="act-arr">&#x203A;</div>
                     </button>
                     <button class="act-btn" onclick="openLibrary()">
                         <div class="act-icon act-icon-lib">&#x2261;</div>
-                        <div class="act-txt"><div class="act-name">Library</div><div class="act-sub">Book records &amp; history</div></div>
+                        <div class="act-txt">
+                            <div class="act-name">Library</div>
+                            <div class="act-sub">Book records &amp; history</div>
+                        </div>
                         <div class="act-arr">&#x203A;</div>
                     </button>
                     <button class="act-btn" onclick="openFees()">
                         <div class="act-icon act-icon-fee">&#x20B9;</div>
-                        <div class="act-txt"><div class="act-name">Fees</div><div class="act-sub">Payments &amp; receipts</div></div>
+                        <div class="act-txt">
+                            <div class="act-name">Fees</div>
+                            <div class="act-sub">Payments &amp; receipts</div>
+                        </div>
                         <div class="act-arr">&#x203A;</div>
                     </button>
                     <button class="act-btn" onclick="exitDashboard()">
                         <div class="act-icon act-icon-exit">&#x2717;</div>
-                        <div class="act-txt"><div class="act-name">Exit</div><div class="act-sub">Sign out &amp; return home</div></div>
+                        <div class="act-txt">
+                            <div class="act-name">Exit</div>
+                            <div class="act-sub">Sign out &amp; return home</div>
+                        </div>
                         <div class="act-arr">&#x203A;</div>
                     </button>
                 </div>
                 <div class="att-summary">
                     <div class="att-sum-title">This Month's Attendance Summary</div>
                     <div class="att-sum-row">
-                        <div class="asm-tile"><div class="asm-val" id="sumTotal">0</div><div class="asm-lbl">Total Days</div></div>
-                        <div class="asm-tile"><div class="asm-val" id="sumPresent">0</div><div class="asm-lbl">Present</div></div>
-                        <div class="asm-tile"><div class="asm-val" id="sumAbsent">0</div><div class="asm-lbl">Absent</div></div>
-                        <div class="asm-tile"><div class="asm-val" id="sumPct">0%</div><div class="asm-lbl">Attendance %</div></div>
+                        <div class="asm-tile">
+                            <div class="asm-val" id="sumTotal">0</div>
+                            <div class="asm-lbl">Total Days</div>
+                        </div>
+                        <div class="asm-tile">
+                            <div class="asm-val" id="sumPresent">0</div>
+                            <div class="asm-lbl">Present</div>
+                        </div>
+                        <div class="asm-tile">
+                            <div class="asm-val" id="sumAbsent">0</div>
+                            <div class="asm-lbl">Absent</div>
+                        </div>
+                        <div class="asm-tile">
+                            <div class="asm-val" id="sumPct">0%</div>
+                            <div class="asm-lbl">Attendance %</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -596,33 +2032,68 @@
                     </div>
                     <div style="display:flex;gap:.7vw">
                         <select class="cal-sel" id="moSel" onchange="chMonth()">
-                            <option value="0">January</option><option value="1">February</option>
-                            <option value="2">March</option><option value="3">April</option>
-                            <option value="4">May</option><option value="5">June</option>
-                            <option value="6">July</option><option value="7">August</option>
-                            <option value="8">September</option><option value="9">October</option>
-                            <option value="10">November</option><option value="11">December</option>
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
                         </select>
                         <select class="cal-sel" id="yrSel" onchange="chYear()"></select>
                     </div>
                 </div>
                 <div class="cal-grid" id="calGrid">
-                    <div class="dh">Sun</div><div class="dh">Mon</div><div class="dh">Tue</div>
-                    <div class="dh">Wed</div><div class="dh">Thu</div><div class="dh">Fri</div><div class="dh">Sat</div>
+                    <div class="dh">Sun</div>
+                    <div class="dh">Mon</div>
+                    <div class="dh">Tue</div>
+                    <div class="dh">Wed</div>
+                    <div class="dh">Thu</div>
+                    <div class="dh">Fri</div>
+                    <div class="dh">Sat</div>
                 </div>
                 <div class="cal-footer">
                     <div class="legend">
-                        <div class="leg-i"><div class="leg-d fd"></div>Full Day</div>
-                        <div class="leg-i"><div class="leg-d hd"></div>Half Day</div>
-                        <div class="leg-i"><div class="leg-d ab"></div>Absent</div>
+                        <div class="leg-i">
+                            <div class="leg-d fd"></div>Full Day
+                        </div>
+                        <div class="leg-i">
+                            <div class="leg-d hd"></div>Half Day
+                        </div>
+                        <div class="leg-i">
+                            <div class="leg-d ab"></div>Absent
+                        </div>
                     </div>
                     <div class="sum-row">
-                        <div class="sum-t"><div class="sum-v" id="cTotal">0</div><div class="sum-l">Total</div></div>
-                        <div class="sum-t"><div class="sum-v" id="cFull">0</div><div class="sum-l">Full</div></div>
-                        <div class="sum-t"><div class="sum-v" id="cHalf">0</div><div class="sum-l">Half</div></div>
-                        <div class="sum-t"><div class="sum-v" id="cAbsent">0</div><div class="sum-l">Absent</div></div>
-                        <div class="sum-t"><div class="sum-v" id="cPct">0%</div><div class="sum-l">Present %</div></div>
-                        <div class="sum-t"><div class="sum-v" id="cAPct">0%</div><div class="sum-l">Absent %</div></div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cTotal">0</div>
+                            <div class="sum-l">Total</div>
+                        </div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cFull">0</div>
+                            <div class="sum-l">Full</div>
+                        </div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cHalf">0</div>
+                            <div class="sum-l">Half</div>
+                        </div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cAbsent">0</div>
+                            <div class="sum-l">Absent</div>
+                        </div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cPct">0%</div>
+                            <div class="sum-l">Present %</div>
+                        </div>
+                        <div class="sum-t">
+                            <div class="sum-v" id="cAPct">0%</div>
+                            <div class="sum-l">Absent %</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -650,177 +2121,191 @@
             <div class="print-sub">Please wait, report is being printed</div>
         </div>
 
-        <iframe id="silentPrintFrame" style="display:none;position:fixed;left:-9999px;top:-9999px;width:0;height:0;border:none;"></iframe>
+        <iframe id="silentPrintFrame"
+            style="display:none;position:fixed;left:-9999px;top:-9999px;width:0;height:0;border:none;"></iframe>
     </div>
 
     <script>
-        const API='https://script.google.com/macros/s/AKfycbz1iUmBfoTAGcmAqthsODGVczo824zW-YAcKDLC688Y8DwMICqJ7oEvOMRjJJPzmaQK/exec';
-        let student=null,attData={},pollTimer=null,lastUID="null",inactTimer=null,lastActive=Date.now(),userActive=false,isFetching=false;
-        let curMonth=new Date().getMonth(),curYear=new Date().getFullYear();
-        const POLL_MS=200,INACTIVE_MS=10000;
+        const API = 'https://script.google.com/macros/s/AKfycbz1iUmBfoTAGcmAqthsODGVczo824zW-YAcKDLC688Y8DwMICqJ7oEvOMRjJJPzmaQK/exec';
+        let student = null, attData = {}, pollTimer = null, lastUID = "null", inactTimer = null, lastActive = Date.now(), userActive = false, isFetching = false;
+        let curMonth = new Date().getMonth(), curYear = new Date().getFullYear();
+        const POLL_MS = 200, INACTIVE_MS = 10000;
 
-        window.addEventListener('load',()=>{startPolling();initActivity();populateYears();tick();setInterval(tick,100);});
+        window.addEventListener('load', () => { startPolling(); initActivity(); populateYears(); tick(); setInterval(tick, 100); });
 
-        function tick(){const n=new Date();document.getElementById('clockDate').textContent=n.toLocaleDateString('en-IN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});document.getElementById('clockTime').textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});}
+        function tick() { const n = new Date(); document.getElementById('clockDate').textContent = n.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }); document.getElementById('clockTime').textContent = n.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }); }
 
-        function setConn(s){const el=document.getElementById('connStatus');el.className=`conn-pill ${s}`;document.getElementById('connText').textContent=s==='connected'?'Listening':s==='paused'?'Paused':'Disconnected';}
+        function setConn(s) { const el = document.getElementById('connStatus'); el.className = `conn-pill ${s}`; document.getElementById('connText').textContent = s === 'connected' ? 'Listening' : s === 'paused' ? 'Paused' : 'Disconnected'; }
 
-        function startPolling(){
+        function startPolling() {
             setConn('connected');
-            pollTimer=setInterval(async()=>{
-                if(!document.getElementById('welcomeScreen').classList.contains('active'))return;
-                if(isFetching)return;
-                isFetching=true;
-                try{
-                    const d=await(await fetch(`${API}?action=getLatestScan&t=${Date.now()}`)).json();
-                    if(d.status==='success'){
-                        const uid=d.data.uid;
-                        if(uid&&uid!=="null"&&uid!==lastUID){
-                            lastUID=uid;
-                            if(document.getElementById('welcomeScreen').classList.contains('active')){
-                                const displayName=d.data.name||uid;
-                                setIndicator('listening','Card detected!');
-                                document.getElementById('detectedName').textContent=displayName;
+            pollTimer = setInterval(async () => {
+                if (!document.getElementById('welcomeScreen').classList.contains('active')) return;
+                if (isFetching) return;
+                isFetching = true;
+                try {
+                    const d = await (await fetch(`${API}?action=getLatestScan&t=${Date.now()}`)).json();
+                    if (d.status === 'success') {
+                        const uid = d.data.uid;
+                        if (uid && uid !== "null" && uid !== lastUID) {
+                            lastUID = uid;
+                            if (document.getElementById('welcomeScreen').classList.contains('active')) {
+                                const displayName = d.data.name || uid;
+                                setIndicator('listening', 'Card detected!');
+                                document.getElementById('detectedName').textContent = displayName;
                                 document.getElementById('detectedNameWrap').classList.add('show');
                                 handleScan(uid);
                             }
                         }
                     }
-                }catch(e){}finally{isFetching=false;}
-            },POLL_MS);
+                } catch (e) { } finally { isFetching = false; }
+            }, POLL_MS);
         }
-        function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;setConn('paused');}}
-        function resumePolling(){if(!pollTimer){isFetching=false;startPolling();}}
+        function stopPolling() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; setConn('paused'); } }
+        function resumePolling() { if (!pollTimer) { isFetching = false; startPolling(); } }
 
-        async function handleScan(uid){
+        async function handleScan(uid) {
             stopPolling();
-            try{
-                const d=await(await fetch(`${API}?action=getUserData&uid=${uid}&t=${Date.now()}`)).json();
-                if(d.status==='success'){student=d.data.profile;attData={};d.data.attendance.forEach(r=>{attData[r.date]=r.status;});showDashboard(d.data);await clearScan();startInactTimer();}
+            try {
+                const d = await (await fetch(`${API}?action=getUserData&uid=${uid}&t=${Date.now()}`)).json();
+                if (d.status === 'success') { student = d.data.profile; attData = {}; d.data.attendance.forEach(r => { attData[r.date] = r.status; }); showDashboard(d.data); await clearScan(); startInactTimer(); }
                 else home();
-            }catch(e){home();}
+            } catch (e) { home(); }
         }
-        async function clearScan(){try{await fetch(`${API}?action=clearScan&t=${Date.now()}`);lastUID="null";}catch(e){}}
+        async function clearScan() { try { await fetch(`${API}?action=clearScan&t=${Date.now()}`); lastUID = "null"; } catch (e) { } }
 
-        function showDashboard(data){
-            const p=data.profile;
-            document.getElementById('profName').textContent=p.name;
-            document.getElementById('profId').textContent=`ID: ${p.id}`;
-            document.getElementById('profId2').textContent=p.id;
-            document.getElementById('profFather').textContent=p.fatherName||'N/A';
-            document.getElementById('profAddress').textContent=p.address;
-            document.getElementById('profUID').textContent=p.uid;
-            const img=document.getElementById('profPhoto');
-            if(p.photo){img.src=`./assets/photos/${p.photo}`;img.onerror=()=>img.src='https://ui-avatars.com/api/?name='+encodeURIComponent(p.name)+'&background=00BCD4&color=fff&size=150';}
-            document.getElementById('statTotal').textContent=data.stats.totalDays;
-            document.getElementById('statPresent').textContent=data.stats.presentDays;
-            document.getElementById('statAbsent').textContent=data.stats.absentDays;
+        function showDashboard(data) {
+            const p = data.profile;
+            document.getElementById('profName').textContent = p.name;
+            document.getElementById('profId').textContent = `ID: ${p.id}`;
+            document.getElementById('profId2').textContent = p.id;
+            document.getElementById('profFather').textContent = p.fatherName || 'N/A';
+            document.getElementById('profAddress').textContent = p.address;
+            document.getElementById('profUID').textContent = p.uid;
+            const img = document.getElementById('profPhoto');
+            if (p.photo) { img.src = `./assets/photos/${p.photo}`; img.onerror = () => img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.name) + '&background=00BCD4&color=fff&size=150'; }
+            document.getElementById('statTotal').textContent = data.stats.totalDays;
+            document.getElementById('statPresent').textContent = data.stats.presentDays;
+            document.getElementById('statAbsent').textContent = data.stats.absentDays;
             calcMonthSummary();
-            document.getElementById('sumTotal').textContent=document.getElementById('cTotal').textContent;
-            document.getElementById('sumPresent').textContent=document.getElementById('cFull').textContent;
-            document.getElementById('sumAbsent').textContent=document.getElementById('cAbsent').textContent;
-            const pct=data.stats.totalDays>0?Math.round((data.stats.presentDays/data.stats.totalDays)*100):0;
-            document.getElementById('sumPct').textContent=pct+'%';
-            show('welcomeScreen',false);show('dashboard',true);
+            document.getElementById('sumTotal').textContent = document.getElementById('cTotal').textContent;
+            document.getElementById('sumPresent').textContent = document.getElementById('cFull').textContent;
+            document.getElementById('sumAbsent').textContent = document.getElementById('cAbsent').textContent;
+            const pct = data.stats.totalDays > 0 ? Math.round((data.stats.presentDays / data.stats.totalDays) * 100) : 0;
+            document.getElementById('sumPct').textContent = pct + '%';
+            show('welcomeScreen', false); show('dashboard', true);
         }
 
-        async function home(){
+        async function home() {
             stopInactTimer();
-            ['dashboard','attPage'].forEach(id=>show(id,false));
+            ['dashboard', 'attPage'].forEach(id => show(id, false));
             document.getElementById('reportModal').classList.remove('active');
-            show('welcomeScreen',true);
-            student=null;attData={};userActive=false;
+            show('welcomeScreen', true);
+            student = null; attData = {}; userActive = false;
             document.getElementById('detectedNameWrap').classList.remove('show');
-            document.getElementById('detectedName').textContent='—';
-            await clearScan();resumePolling();
-            setIndicator('listening','Listening for card scan\u2026');
+            document.getElementById('detectedName').textContent = '—';
+            await clearScan(); resumePolling();
+            setIndicator('listening', 'Listening for card scan\u2026');
         }
-        function show(id,on){const el=document.getElementById(id);if(on)el.classList.add('active');else el.classList.remove('active');}
+        function show(id, on) { const el = document.getElementById(id); if (on) el.classList.add('active'); else el.classList.remove('active'); }
 
-        function resetActive(){lastActive=Date.now();userActive=true;}
-        function initActivity(){['mousedown','mousemove','keypress','scroll','touchstart','click','pointermove'].forEach(e=>document.addEventListener(e,resetActive,{passive:true}));}
-        function startInactTimer(){stopInactTimer();lastActive=Date.now();inactTimer=setInterval(()=>{const idleMs=Date.now()-lastActive;const onDash=document.getElementById('dashboard').classList.contains('active');const onAtt=document.getElementById('attPage').classList.contains('active');if(idleMs>=INACTIVE_MS&&(onDash||onAtt))home();},1000);}
-        function stopInactTimer(){if(inactTimer){clearInterval(inactTimer);inactTimer=null;}}
+        function resetActive() { lastActive = Date.now(); userActive = true; }
+        function initActivity() { ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click', 'pointermove'].forEach(e => document.addEventListener(e, resetActive, { passive: true })); }
+        function startInactTimer() { stopInactTimer(); lastActive = Date.now(); inactTimer = setInterval(() => { const idleMs = Date.now() - lastActive; const onDash = document.getElementById('dashboard').classList.contains('active'); const onAtt = document.getElementById('attPage').classList.contains('active'); if (idleMs >= INACTIVE_MS && (onDash || onAtt)) home(); }, 1000); }
+        function stopInactTimer() { if (inactTimer) { clearInterval(inactTimer); inactTimer = null; } }
 
-        function setIndicator(cls,txt){const el=document.getElementById('scanIndicator');el.className=`sc-status ${cls}`;el.textContent=txt;}
+        function setIndicator(cls, txt) { const el = document.getElementById('scanIndicator'); el.className = `sc-status ${cls}`; el.textContent = txt; }
 
-        function viewAttendance(){resetActive();show('dashboard',false);show('attPage',true);curMonth=new Date().getMonth();curYear=new Date().getFullYear();document.getElementById('moSel').value=curMonth;document.getElementById('yrSel').value=curYear;renderCal();startInactTimer();}
-        function backToDash(){resetActive();show('attPage',false);show('dashboard',true);startInactTimer();}
-        function exitDashboard(){home();}
-        function openLibrary(){resetActive();startInactTimer();alert('Library module coming soon!');}
-        function openFees(){resetActive();startInactTimer();alert('Fees module coming soon!');}
+        function viewAttendance() { resetActive(); show('dashboard', false); show('attPage', true); curMonth = new Date().getMonth(); curYear = new Date().getFullYear(); document.getElementById('moSel').value = curMonth; document.getElementById('yrSel').value = curYear; renderCal(); startInactTimer(); }
+        function backToDash() { resetActive(); show('attPage', false); show('dashboard', true); startInactTimer(); }
+        function exitDashboard() { home(); }
+        function openLibrary() { resetActive(); startInactTimer(); alert('Library module coming soon!'); }
+        function openFees() { resetActive(); startInactTimer(); alert('Fees module coming soon!'); }
 
-        async function viewReport(){
-            if(!student)return;resetActive();
+        async function viewReport() {
+            if (!student) return; resetActive();
             document.getElementById('reportModal').classList.add('active');
-            document.getElementById('reportContent').textContent='Loading…';
-            try{const r=await fetch(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}&t=${Date.now()}`);document.getElementById('reportContent').textContent=await r.text();}
-            catch(e){document.getElementById('reportContent').textContent='❌ Failed to load.';}
+            document.getElementById('reportContent').textContent = 'Loading…';
+            try { const r = await fetch(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}&t=${Date.now()}`); document.getElementById('reportContent').textContent = await r.text(); }
+            catch (e) { document.getElementById('reportContent').textContent = '❌ Failed to load.'; }
             startInactTimer();
         }
-        function closeModal(){document.getElementById('reportModal').classList.remove('active');resetActive();startInactTimer();}
-        function dlFromModal(){if(!student)return;window.open(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}`,'_blank');resetActive();startInactTimer();}
+        function closeModal() { document.getElementById('reportModal').classList.remove('active'); resetActive(); startInactTimer(); }
+        function dlFromModal() { if (!student) return; window.open(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}`, '_blank'); resetActive(); startInactTimer(); }
 
-        async function printReport(){
-    if(!student) return;
+        async function printReport() {
 
-    try{
-        const r = await fetch(`${API}?action=downloadReport&uid=${student.uid}&month=${curMonth}&year=${curYear}`);
-        const reportText = await r.text();
+            const reportElement = document.querySelector(".modal-box").outerHTML;
 
-        await fetch("http://192.168.1.37:3000/print", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ content: reportText })
-        });
+            const fullHtml = `
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    ${reportElement}
+</body>
+</html>
+`;
 
-        console.log("Printed Successfully");
+            await fetch("http://192.168.1.37:3000/print", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: fullHtml })
+            });
 
-    } catch(e){
-        alert("Printing Failed!");
-        console.error(e);
-    }
-}
-        async function printFromModal(){closeModal();await printReport();}
+            console.log("Printed Successfully");
+        }
+        async function printFromModal() { closeModal(); await printReport(); }
 
-        const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-        function fmtDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-        function populateYears(){const sel=document.getElementById('yrSel');const cy=new Date().getFullYear();for(let y=cy-5;y<=cy+5;y++){const o=document.createElement('option');o.value=y;o.textContent=y;if(y===cy)o.selected=true;sel.appendChild(o);}}
-        function renderCal(){
-            document.getElementById('moDisplay').textContent=`${MONTHS[curMonth]} ${curYear}`;
-            const grid=document.getElementById('calGrid');
-            while(grid.children.length>7)grid.removeChild(grid.lastChild);
-            const firstDay=new Date(curYear,curMonth,1).getDay();
-            const daysInMo=new Date(curYear,curMonth+1,0).getDate();
-            const today=new Date();const todayStr=fmtDate(today);
-            for(let i=0;i<firstDay;i++){const e=document.createElement('div');e.className='cd empty';grid.appendChild(e);}
-            for(let d=1;d<=daysInMo;d++){
-                const dt=new Date(curYear,curMonth,d);const ds=fmtDate(dt);
-                const el=document.createElement('div');el.className='cd';
-                if(ds===todayStr)el.classList.add('today');
-                const stat=attData[ds];
-                if(dt>today)el.classList.add('future');
-                else if(stat==='Full Day')el.classList.add('full-day');
-                else if(stat==='Half Day')el.classList.add('half-day');
+        const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        function fmtDate(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+        function populateYears() { const sel = document.getElementById('yrSel'); const cy = new Date().getFullYear(); for (let y = cy - 5; y <= cy + 5; y++) { const o = document.createElement('option'); o.value = y; o.textContent = y; if (y === cy) o.selected = true; sel.appendChild(o); } }
+        function renderCal() {
+            document.getElementById('moDisplay').textContent = `${MONTHS[curMonth]} ${curYear}`;
+            const grid = document.getElementById('calGrid');
+            while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+            const firstDay = new Date(curYear, curMonth, 1).getDay();
+            const daysInMo = new Date(curYear, curMonth + 1, 0).getDate();
+            const today = new Date(); const todayStr = fmtDate(today);
+            for (let i = 0; i < firstDay; i++) { const e = document.createElement('div'); e.className = 'cd empty'; grid.appendChild(e); }
+            for (let d = 1; d <= daysInMo; d++) {
+                const dt = new Date(curYear, curMonth, d); const ds = fmtDate(dt);
+                const el = document.createElement('div'); el.className = 'cd';
+                if (ds === todayStr) el.classList.add('today');
+                const stat = attData[ds];
+                if (dt > today) el.classList.add('future');
+                else if (stat === 'Full Day') el.classList.add('full-day');
+                else if (stat === 'Half Day') el.classList.add('half-day');
                 else el.classList.add('absent');
-                const n=document.createElement('div');n.className='cd-n';n.textContent=d;
-                const s=document.createElement('div');s.className='cd-s';
-                s.textContent=dt>today?'·':stat==='Full Day'?'✓':stat==='Half Day'?'½':'✗';
-                el.appendChild(n);el.appendChild(s);grid.appendChild(el);
+                const n = document.createElement('div'); n.className = 'cd-n'; n.textContent = d;
+                const s = document.createElement('div'); s.className = 'cd-s';
+                s.textContent = dt > today ? '·' : stat === 'Full Day' ? '✓' : stat === 'Half Day' ? '½' : '✗';
+                el.appendChild(n); el.appendChild(s); grid.appendChild(el);
             }
             calcMonthSummary();
         }
-        function calcMonthSummary(){
-            const today=new Date();const last=new Date(curYear,curMonth+1,0).getDate();
-            let tot=0,ful=0,hal=0,abs=0;
-            for(let d=1;d<=last;d++){const dt=new Date(curYear,curMonth,d);if(dt<=today){tot++;const s=attData[fmtDate(dt)];if(s==='Full Day')ful++;else if(s==='Half Day')hal++;else abs++;}}
-            const pPct=tot>0?Math.round(((ful+hal)/tot)*100):0;const aPct=tot>0?Math.round((abs/tot)*100):0;
-            document.getElementById('cTotal').textContent=tot;document.getElementById('cFull').textContent=ful;document.getElementById('cHalf').textContent=hal;document.getElementById('cAbsent').textContent=abs;document.getElementById('cPct').textContent=pPct+'%';document.getElementById('cAPct').textContent=aPct+'%';
+        function calcMonthSummary() {
+            const today = new Date(); const last = new Date(curYear, curMonth + 1, 0).getDate();
+            let tot = 0, ful = 0, hal = 0, abs = 0;
+            for (let d = 1; d <= last; d++) { const dt = new Date(curYear, curMonth, d); if (dt <= today) { tot++; const s = attData[fmtDate(dt)]; if (s === 'Full Day') ful++; else if (s === 'Half Day') hal++; else abs++; } }
+            const pPct = tot > 0 ? Math.round(((ful + hal) / tot) * 100) : 0; const aPct = tot > 0 ? Math.round((abs / tot) * 100) : 0;
+            document.getElementById('cTotal').textContent = tot; document.getElementById('cFull').textContent = ful; document.getElementById('cHalf').textContent = hal; document.getElementById('cAbsent').textContent = abs; document.getElementById('cPct').textContent = pPct + '%'; document.getElementById('cAPct').textContent = aPct + '%';
         }
-        function prevMonth(){resetActive();if(--curMonth<0){curMonth=11;curYear--;}document.getElementById('moSel').value=curMonth;document.getElementById('yrSel').value=curYear;renderCal();startInactTimer();}
-        function nextMonth(){resetActive();if(++curMonth>11){curMonth=0;curYear++;}document.getElementById('moSel').value=curMonth;document.getElementById('yrSel').value=curYear;renderCal();startInactTimer();}
-        function chMonth(){resetActive();curMonth=parseInt(document.getElementById('moSel').value);renderCal();startInactTimer();}
-        function chYear(){resetActive();curYear=parseInt(document.getElementById('yrSel').value);renderCal();startInactTimer();}
+        function prevMonth() { resetActive(); if (--curMonth < 0) { curMonth = 11; curYear--; } document.getElementById('moSel').value = curMonth; document.getElementById('yrSel').value = curYear; renderCal(); startInactTimer(); }
+        function nextMonth() { resetActive(); if (++curMonth > 11) { curMonth = 0; curYear++; } document.getElementById('moSel').value = curMonth; document.getElementById('yrSel').value = curYear; renderCal(); startInactTimer(); }
+        function chMonth() { resetActive(); curMonth = parseInt(document.getElementById('moSel').value); renderCal(); startInactTimer(); }
+        function chYear() { resetActive(); curYear = parseInt(document.getElementById('yrSel').value); renderCal(); startInactTimer(); }
     </script>
 </body>
+
 </html>
