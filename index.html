@@ -657,7 +657,7 @@
         const API='https://script.google.com/macros/s/AKfycbz1iUmBfoTAGcmAqthsODGVczo824zW-YAcKDLC688Y8DwMICqJ7oEvOMRjJJPzmaQK/exec';
         let student=null,attData={},pollTimer=null,lastUID="null",inactTimer=null,lastActive=Date.now(),userActive=false,isFetching=false;
         let curMonth=new Date().getMonth(),curYear=new Date().getFullYear();
-        const POLL_MS=200,INACTIVE_MS=1000000;
+        const POLL_MS=200,INACTIVE_MS=10000;
 
         window.addEventListener('load',()=>{startPolling();initActivity();populateYears();tick();setInterval(tick,100);});
 
