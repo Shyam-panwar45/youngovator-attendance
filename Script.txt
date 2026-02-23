@@ -1,0 +1,600 @@
+// ════════════════════════════════════════════════════════════════════════════
+// YOUNGOVATOR ATTENDANCE SYSTEM - FINAL PRODUCTION VERSION
+// Two Device System: Attendance Scanner + Kiosk Scanner
+// ════════════════════════════════════════════════════════════════════════════
+
+var ATTENDANCE_DEVICE_ID = "ATT-ESP32-001";
+var KIOSK_DEVICE_ID = "KIOSK-ESP32-002";
+
+function doPost(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var uidMapSheet = ss.getSheetByName("UID_MAP1");
+    var attendanceSheet = ss.getSheetByName("attendance1");
+    var latestScanSheet = ss.getSheetByName("LATEST_SCAN");
+
+    var data = JSON.parse(e.postData.contents);
+    var uid = String(data.uid).trim().toUpperCase();
+    var date = data.date;
+    var time = data.time;
+    var deviceId = String(data.deviceId || "unknown").trim();
+
+    // Get user name
+    var name = getNameFromUID(uidMapSheet, uid);
+    if (name === null) {
+      return jsonResponse("error", "UID not registered");
+    }
+
+    // Route based on device ID
+    if (deviceId === ATTENDANCE_DEVICE_ID) {
+      // ATTENDANCE SCANNER - Mark attendance only
+      var result = recordAttendance(attendanceSheet, uid, name, date, time);
+      return jsonResponse("success", result);
+    }
+    else if (deviceId === KIOSK_DEVICE_ID) {
+      // KIOSK SCANNER - Update display only
+      updateLatestScan(latestScanSheet, uid, name, date, time);
+      return jsonResponse("success", "Kiosk updated");
+    }
+    else {
+      return jsonResponse("error", "Unknown device: " + deviceId);
+    }
+
+  } catch (error) {
+    return jsonResponse("error", error.toString());
+  }
+}
+
+function recordAttendance(sheet, uid, name, date, time) {
+  var normalizedSearchDate = normalizeDate(date);
+  var data = sheet.getDataRange().getValues();
+  var foundRow = -1;
+
+  for (var i = 1; i < data.length; i++) {
+    var rowUID  = String(data[i][0]).trim();
+    var rowDate = normalizeDate(data[i][2]);
+    if (rowUID === uid && rowDate === normalizedSearchDate) {
+      foundRow = i + 1;
+      break;
+    }
+  }
+
+  if (foundRow !== -1) {
+    var loginCell  = sheet.getRange(foundRow, 4);
+    var logoutCell = sheet.getRange(foundRow, 5);
+    var hoursCell  = sheet.getRange(foundRow, 6);
+    var statusCell = sheet.getRange(foundRow, 7);
+    var login  = loginCell.getValue();
+    var logout = logoutCell.getValue();
+
+    if (!login || login === "") {
+      loginCell.setValue(time);
+      loginCell.setNumberFormat("@");
+      hoursCell.setValue("");
+      statusCell.setValue("");
+      return name + " LOGIN recorded";
+    }
+
+    if (login && (!logout || logout === "")) {
+      logoutCell.setValue(time);
+      logoutCell.setNumberFormat("@");
+      var workedHours = calculateWorkHours(login, time);
+      hoursCell.setValue(workedHours);
+      hoursCell.setNumberFormat("0.00");
+      var status = "";
+      if (workedHours >= 7) {
+        status = "Full Day";
+      } else if (workedHours < 3) {
+        status = "Absent";
+      } else {
+        status = "Half Day";
+      }
+      statusCell.setValue(status);
+      return name + " LOGOUT recorded - " + workedHours + " hours";
+    }
+
+    return "Already scanned twice today";
+  }
+
+  sheet.appendRow([uid, name, date, time, "", "", ""]);
+  return name + " LOGIN recorded";
+}
+
+function updateLatestScan(sheet, uid, name, date, time) {
+  var timestamp = new Date().toISOString();
+  sheet.getRange(2, 1).setValue(uid);
+  sheet.getRange(2, 2).setValue(name);
+  sheet.getRange(2, 3).setValue(timestamp);
+  sheet.getRange(2, 4).setValue(date);
+  sheet.getRange(2, 5).setValue(time);
+}
+
+function doGet(e) {
+  try {
+    var action = e.parameter.action;
+
+    if (action === "getLatestScan") {
+      return getLatestScan();
+    } 
+    else if (action === "getUserData") {
+      var uid = e.parameter.uid;
+      return getUserData(uid);
+    }
+    else if (action === "downloadReport") {
+      var uid = e.parameter.uid;
+      var month = e.parameter.month;
+      var year = e.parameter.year;
+      return downloadReport(uid, month, year);
+    }
+    else if (action === "clearScan") {
+      return clearLatestScan();
+    }
+    else if (action === "registerUser") {
+      var userData = {
+        uid: e.parameter.uid,
+        name: e.parameter.name,
+        fatherName: e.parameter.fatherName,
+        address: e.parameter.address,
+        photo: e.parameter.photo
+      };
+      return registerNewUser(userData);
+    }
+    else {
+      return jsonResponse("error", "Invalid action");
+    }
+
+  } catch (error) {
+    return jsonResponse("error", error.toString());
+  }
+}
+
+function getLatestScan() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("LATEST_SCAN");
+  
+  var uid = sheet.getRange(2, 1).getValue();
+  var name = sheet.getRange(2, 2).getValue();
+  var timestamp = sheet.getRange(2, 3).getValue();
+  var date = sheet.getRange(2, 4).getValue();
+  var time = sheet.getRange(2, 5).getValue();
+  
+  var response = {
+    status: "success",
+    data: {
+      uid: String(uid),
+      name: String(name),
+      timestamp: String(timestamp),
+      date: String(date),
+      time: String(time)
+    }
+  };
+  
+  return ContentService
+    .createTextOutput(JSON.stringify(response))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function clearLatestScan() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("LATEST_SCAN");
+  
+  sheet.getRange(2, 1).setValue("null");
+  sheet.getRange(2, 2).setValue("null");
+  sheet.getRange(2, 3).setValue("");
+  sheet.getRange(2, 4).setValue("");
+  sheet.getRange(2, 5).setValue("");
+  
+  return jsonResponse("success", "Latest scan cleared");
+}
+
+function getUserData(uid) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var uidMapSheet = ss.getSheetByName("UID_MAP1");
+  var attendanceSheet = ss.getSheetByName("attendance1");
+  
+  uid = String(uid).trim().toUpperCase();
+  
+  var profile = getProfileInfo(uidMapSheet, uid);
+  
+  if (!profile) {
+    return jsonResponse("error", "User not found");
+  }
+  
+  var attendance = getAttendanceRecords(attendanceSheet, uid);
+  var stats = calculateStats(attendance);
+  
+  var response = {
+    status: "success",
+    data: {
+      profile: profile,
+      attendance: attendance,
+      stats: stats
+    }
+  };
+  
+  return ContentService
+    .createTextOutput(JSON.stringify(response))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getProfileInfo(sheet, uid) {
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toUpperCase() === uid) {
+      return {
+        uid: uid,
+        name: data[i][1] || "Unknown",
+        id: "EMP" + String(i).padStart(3, '0'),
+        fatherName: data[i][2] || "",
+        address: data[i][3] || "",
+        photo: data[i][4] || "https://i.pravatar.cc/150?img=12"
+      };
+    }
+  }
+  
+  return null;
+}
+
+function getAttendanceRecords(sheet, uid) {
+  var data = sheet.getDataRange().getValues();
+  var records = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toUpperCase() === uid) {
+      records.push({
+        date: formatDate(data[i][2]),
+        login: formatTime(data[i][3]),
+        logout: formatTime(data[i][4]),
+        hours: parseFloat(data[i][5]) || 0,
+        status: String(data[i][6] || "")
+      });
+    }
+  }
+  
+  return records;
+}
+
+function calculateStats(attendance) {
+  var today = new Date();
+  var currentMonth = today.getMonth();
+  var currentYear = today.getFullYear();
+  
+  var totalDays = 0;
+  var presentDays = 0;
+  var absentDays = 0;
+  var totalHours = 0;
+  
+  attendance.forEach(function(record) {
+    var recordDate = new Date(record.date);
+    
+    if (recordDate.getMonth() === currentMonth && 
+        recordDate.getFullYear() === currentYear &&
+        recordDate <= today) {
+      
+      totalDays++;
+      
+      if (record.status === "Full Day" || record.status === "Half Day") {
+        presentDays++;
+        totalHours += record.hours;
+      } else {
+        absentDays++;
+      }
+    }
+  });
+  
+  var presentPercentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+  
+  return {
+    totalDays: totalDays,
+    presentDays: presentDays,
+    absentDays: absentDays,
+    totalHours: Math.round(totalHours * 100) / 100,
+    presentPercentage: presentPercentage
+  };
+}
+
+function downloadReport(uid, month, year) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var uidMapSheet = ss.getSheetByName("UID_MAP1");
+  var attendanceSheet = ss.getSheetByName("attendance1");
+  
+  uid = String(uid).trim().toUpperCase();
+  month = parseInt(month);
+  year = parseInt(year);
+  
+  var profile = getProfileInfo(uidMapSheet, uid);
+  if (!profile) {
+    return jsonResponse("error", "User not found");
+  }
+  
+  var data = attendanceSheet.getDataRange().getValues();
+  var txtContent = "";
+  
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  txtContent += "                          ATTENDANCE REPORT                                    \n";
+  txtContent += "                            " + getMonthName(month).toUpperCase() + " " + year + "                                       \n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+  
+  txtContent += "👤 EMPLOYEE DETAILS\n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  txtContent += "   Name                  " + profile.name + "\n";
+  txtContent += "   ID                    " + profile.id + "\n";
+  txtContent += "   UID                   " + uid + "\n";
+  txtContent += "   Father's Name         " + (profile.fatherName || "N/A") + "\n";
+  txtContent += "   Address               " + (profile.address || "N/A") + "\n\n";
+  
+  txtContent += "📊 MONTHLY STATISTICS\n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  
+  var totalDays = 0;
+  var presentDays = 0;
+  var halfDays = 0;
+  var absentDays = 0;
+  var totalHours = 0;
+  var attendanceRecords = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toUpperCase() === uid) {
+      var recordDate = new Date(data[i][2]);
+      
+      if (recordDate.getMonth() === month && recordDate.getFullYear() === year) {
+        totalDays++;
+        
+        var hours = data[i][5] ? parseFloat(data[i][5]) : 0;
+        var status = data[i][6] || "Absent";
+        
+        if (status === "Full Day") {
+          presentDays++;
+          totalHours += hours;
+        } else if (status === "Half Day") {
+          halfDays++;
+          totalHours += hours;
+        } else {
+          absentDays++;
+        }
+        
+        attendanceRecords.push({
+          date: recordDate,
+          dateStr: Utilities.formatDate(recordDate, Session.getScriptTimeZone(), "dd-MMM-yyyy"),
+          dayStr: Utilities.formatDate(recordDate, Session.getScriptTimeZone(), "EEEE"),
+          login: formatTimeAMPM(data[i][3]),
+          logout: formatTimeAMPM(data[i][4]),
+          hours: hours.toFixed(2),
+          status: status
+        });
+      }
+    }
+  }
+  
+  attendanceRecords.sort(function(a, b) { return a.date - b.date; });
+  
+  var presentPercentage = totalDays > 0 ? Math.round(((presentDays + halfDays*0.5)/totalDays)*100) : 0;
+  var absentPercentage = totalDays > 0 ? Math.round((absentDays/totalDays)*100) : 0;
+  
+  var presentBar = createProgressBar(presentPercentage);
+  var absentBar = createProgressBar(absentPercentage);
+  
+  txtContent += "   Working Days          " + totalDays + " days\n";
+  txtContent += "   Present               " + (presentDays + halfDays) + " days     " + presentBar + " " + presentPercentage + "%\n";
+  txtContent += "   Absent                " + absentDays + " days     " + absentBar + " " + absentPercentage + "%\n";
+  txtContent += "   Total Hours           " + totalHours.toFixed(2) + " hrs\n";
+  txtContent += "   Avg Hours/Day         " + (totalDays > 0 ? (totalHours/totalDays).toFixed(2) : "0.00") + " hrs\n\n";
+  
+  txtContent += "📅 ATTENDANCE LOG\n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  txtContent += "   Date          Day         In           Out          Hours     Status\n";
+  txtContent += "   ────────────────────────────────────────────────────────────────────────\n";
+  
+  if (attendanceRecords.length > 0) {
+    for (var j = 0; j < attendanceRecords.length; j++) {
+      var record = attendanceRecords[j];
+      
+      var statusSymbol = "";
+      if (record.status === "Full Day") {
+        statusSymbol = "✓ " + record.status;
+      } else if (record.status === "Half Day") {
+        statusSymbol = "⚠ " + record.status;
+      } else {
+        statusSymbol = "✗ " + record.status;
+      }
+      
+      txtContent += "   " + 
+                    padRight(record.dateStr, 13) + 
+                    padRight(record.dayStr, 11) + 
+                    padRight(record.login, 12) + 
+                    padRight(record.logout, 12) + 
+                    padRight(record.hours, 9) + 
+                    statusSymbol + "\n";
+    }
+  } else {
+    txtContent += "   No records found for this month\n";
+  }
+  
+  txtContent += "   ────────────────────────────────────────────────────────────────────────\n\n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  txtContent += "Generated: " + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd-MMM-yyyy hh:mm a");
+  txtContent += " | Youngovator - Smart Attendance System\n";
+  txtContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  
+  var filename = "Attendance_" + profile.name.replace(/ /g, "_") + "_" + getMonthName(month) + "_" + year + ".txt";
+  
+  return ContentService
+    .createTextOutput(txtContent)
+    .setMimeType(ContentService.MimeType.TEXT)
+    .downloadAsFile(filename);
+}
+
+function registerNewUser(userData) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var uidMapSheet = ss.getSheetByName("UID_MAP1");
+    
+    var uid = String(userData.uid).trim().toUpperCase();
+    
+    var data = uidMapSheet.getDataRange().getValues();
+    for (var i = 1; i < data.length; i++) {
+      if (String(data[i][0]).trim().toUpperCase() === uid) {
+        return jsonResponse("error", "UID already registered");
+      }
+    }
+    
+    uidMapSheet.appendRow([
+      uid,
+      userData.name,
+      userData.fatherName || "",
+      userData.address || "",
+      userData.photo || "https://i.pravatar.cc/150?img=1"
+    ]);
+    
+    return jsonResponse("success", "User registered successfully");
+    
+  } catch (error) {
+    return jsonResponse("error", error.toString());
+  }
+}
+
+// Helper Functions
+function getNameFromUID(sheet, uid) {
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toUpperCase() === uid) {
+      return data[i][1];
+    }
+  }
+  return null;
+}
+
+function normalizeDate(dateValue) {
+  if (!dateValue) return "";
+  if (dateValue instanceof Date) {
+    return Utilities.formatDate(dateValue, Session.getScriptTimeZone(), "yyyy-MM-dd");
+  }
+  var d = new Date(dateValue);
+  if (!isNaN(d.getTime())) {
+    return Utilities.formatDate(d, Session.getScriptTimeZone(), "yyyy-MM-dd");
+  }
+  return String(dateValue);
+}
+
+function formatDate(dateValue) {
+  if (!dateValue) return "";
+  if (dateValue instanceof Date) {
+    return Utilities.formatDate(dateValue, Session.getScriptTimeZone(), "yyyy-MM-dd");
+  }
+  return String(dateValue);
+}
+
+function formatTime(timeValue) {
+  if (!timeValue || timeValue === "") return "-";
+  if (typeof timeValue === 'string' && timeValue.match(/^\d{2}:\d{2}:\d{2}$/)) {
+    return timeValue;
+  }
+  if (timeValue instanceof Date) {
+    var hours = timeValue.getHours().toString().padStart(2, '0');
+    var minutes = timeValue.getMinutes().toString().padStart(2, '0');
+    var seconds = timeValue.getSeconds().toString().padStart(2, '0');
+    return hours + ":" + minutes + ":" + seconds;
+  }
+  try {
+    var d = new Date(timeValue);
+    if (!isNaN(d.getTime())) {
+      var hours = d.getHours().toString().padStart(2, '0');
+      var minutes = d.getMinutes().toString().padStart(2, '0');
+      var seconds = d.getSeconds().toString().padStart(2, '0');
+      return hours + ":" + minutes + ":" + seconds;
+    }
+  } catch (e) {}
+  return String(timeValue);
+}
+
+function formatTimeAMPM(timeValue) {
+  if (!timeValue || timeValue === "") return "--";
+  try {
+    var date;
+    if (timeValue instanceof Date) {
+      date = timeValue;
+    } else if (typeof timeValue === 'string' && timeValue.match(/^\d{2}:\d{2}:\d{2}$/)) {
+      var parts = timeValue.split(":");
+      date = new Date();
+      date.setHours(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+    } else {
+      date = new Date(timeValue);
+    }
+    if (isNaN(date.getTime())) {
+      return String(timeValue);
+    }
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    var minutesStr = minutes < 10 ? '0' + minutes : minutes;
+    var hoursStr = hours < 10 ? '0' + hours : hours;
+    return hoursStr + ':' + minutesStr + ' ' + ampm;
+  } catch (e) {
+    return String(timeValue);
+  }
+}
+
+function calculateWorkHours(startTime, endTime) {
+  var start = convertToTimeObject(startTime);
+  var end = convertToTimeObject(endTime);
+  var startMinutes = (start.h * 60) + start.m + (start.s / 60);
+  var endMinutes = (end.h * 60) + end.m + (end.s / 60);
+  var diffMinutes = endMinutes - startMinutes;
+  if (diffMinutes < 0) {
+    diffMinutes = diffMinutes + (24 * 60);
+  }
+  return Math.round((diffMinutes / 60) * 100) / 100;
+}
+
+function convertToTimeObject(timeValue) {
+  var h = 0, m = 0, s = 0;
+  if (Object.prototype.toString.call(timeValue) === '[object Date]') {
+    h = timeValue.getHours();
+    m = timeValue.getMinutes();
+    s = timeValue.getSeconds();
+  } else {
+    var str = String(timeValue).trim();
+    var parts = str.split(":");
+    h = parseInt(parts[0], 10) || 0;
+    m = parseInt(parts[1], 10) || 0;
+    s = parseInt(parts[2], 10) || 0;
+  }
+  return {h: h, m: m, s: s};
+}
+
+function createProgressBar(percentage) {
+  var total = 24;
+  var filled = Math.round((percentage / 100) * total);
+  var empty = total - filled;
+  var bar = "";
+  for (var i = 0; i < filled; i++) {
+    bar += "█";
+  }
+  for (var i = 0; i < empty; i++) {
+    bar += "░";
+  }
+  return bar;
+}
+
+function padRight(str, length) {
+  str = String(str);
+  while (str.length < length) {
+    str += " ";
+  }
+  return str;
+}
+
+function getMonthName(monthIndex) {
+  var months = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+  return months[monthIndex];
+}
+
+function jsonResponse(status, message) {
+  return ContentService
+    .createTextOutput(JSON.stringify({status: status, message: message}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
